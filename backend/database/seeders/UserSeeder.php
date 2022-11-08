@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'lastname' => Str::random(10),
                 'gender' => rand(0,1),
                 'active' => rand(0,1),
+                'is_confirm' => rand(0,1),
                 'phone' => '12345678',
                 'email' => Str::random(10).'@gmail.com',
                 'password' => Hash::make('password'),

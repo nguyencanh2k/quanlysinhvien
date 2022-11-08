@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Validator;
 class StudentController extends Controller
 {
     /**
@@ -26,8 +27,25 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $student = Student::create(array_merge($request->all(), ['created_by' => 'admin', 'updated_by' => 'admin']));
-        return $student;
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|max:255',
+            'firstname' => 'string|max:255',
+            'lastname' => 'string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|string|max:255',
+            'gender' => 'string|max:255',
+            'identification' => 'string|max:255',
+            'address' => 'required|max:255',
+            'school_id' => 'required|max:255',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $student = Student::create(array_merge($validator->validated(), ['created_by' => 'admin', 'updated_by' => 'admin']));
+        return response()->json([
+            'message' => 'Student successfully created',
+            'student' => $student
+        ], 201);
     }
 
     /**
@@ -38,7 +56,11 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::findOrFail($id);
+        try{
+            $student = Student::findOrFail($id);
+        }catch(ModelNotFoundException $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
         return $student;
     }
 

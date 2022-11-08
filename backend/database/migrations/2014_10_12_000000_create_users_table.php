@@ -18,11 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
-            $table->integer('gender');
+            $table->integer('gender')->nullable();
             $table->integer('active')->default(0);
             $table->integer('phone');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('is_confirm')->default(0);
             $table->string('deleted_by')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
