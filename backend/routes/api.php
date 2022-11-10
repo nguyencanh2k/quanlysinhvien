@@ -20,14 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('student', 'App\Http\Controllers\StudentController');
+// Route::apiResource('student', 'App\Http\Controllers\StudentController');
 // Route::get('/student', [StudentController::class, 'index']);
 // Route::get('student/{id}', [StudentController::class, 'show']);
 // Route::post('student', [StudentController::class, 'store']);
 // Route::put('student/{id}', [StudentController::class, 'update']);
 // Route::delete('student/{id}', [StudentController::class, 'destroy']);
 
-Route::apiResource('user', 'App\Http\Controllers\UserController');
+// Route::apiResource('user', 'App\Http\Controllers\UserController');
 
 Route::group([
 
@@ -42,3 +42,17 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 
 });
+Route::middleware(['isAdminOrQLHT'])->group(function () {
+    Route::get('/student', [StudentController::class, 'index']);
+    Route::get('student/{id}', [StudentController::class, 'show']);
+    Route::post('student', [StudentController::class, 'store']);
+    Route::put('student/{id}', [StudentController::class, 'update']);
+
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('user/{id}', [UserController::class, 'show']);
+    Route::post('user', [UserController::class, 'store']);
+    Route::put('user/{id}', [UserController::class, 'update']);
+});
+    Route::delete('user/{id}', [UserController::class, 'destroy'])->middleware('isAdmin');
+    Route::delete('student/{id}', [StudentController::class, 'destroy'])->middleware('isAdmin');
+

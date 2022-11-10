@@ -1,6 +1,19 @@
 import React from 'react';
-
-function Header() {
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+function Header({ users }) {
+    function logOut() {
+        const data = localStorage.getItem('accessToken');
+        axios
+            .post('http://127.0.0.1:8000/api/auth/logout', {
+                body: {
+                    token: data,
+                },
+            })
+            .then((res) => console.log(res.data))
+            .catch((error) => console.log(error));
+        localStorage.removeItem('accessToken');
+    }
     return (
         <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
@@ -72,17 +85,17 @@ function Header() {
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{users.username}</span>
                         <img className="img-profile rounded-circle" src="assets/img/undraw_profile.svg" />
                     </a>
                     <div
                         className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown"
                     >
-                        <a className="dropdown-item" href="#">
+                        <Link to={`/view-user/${users.id}`} className="dropdown-item" href="#">
                             <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Profile
-                        </a>
+                        </Link>
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Settings
@@ -92,10 +105,16 @@ function Header() {
                             Activity Log
                         </a>
                         <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <Link
+                            className="dropdown-item"
+                            to={'/login'}
+                            onClick={logOut}
+                            data-toggle="modal"
+                            data-target="#logoutModal"
+                        >
                             <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
-                        </a>
+                        </Link>
                     </div>
                 </li>
             </ul>

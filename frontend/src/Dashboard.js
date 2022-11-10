@@ -1,24 +1,45 @@
 import { Route, Routes } from 'react-router-dom';
-import SideBar from './Pages/Sidebar';
-import Home from './Pages/Home';
-import Header from './Pages/Header';
-import Footer from './Pages/Footer';
-import Student from './Pages/student/Student';
-import AddStudent from './Pages/student/AddStudent';
-import EditStudent from './Pages/student/EditStudent';
-import ViewStudent from './Pages/student/ViewStudent';
-import User from './Pages/user/User';
-import AddUser from './Pages/user/AddUser';
-import EditUser from './Pages/user/EditUser';
-import ViewUser from './Pages/user/ViewUser';
+import SideBar from './components/Sidebar';
+import Home from './components/Home';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Student from './components/student/Student';
+import AddStudent from './components/student/AddStudent';
+import EditStudent from './components/student/EditStudent';
+import ViewStudent from './components/student/ViewStudent';
+import User from './components/user/User';
+import AddUser from './components/user/AddUser';
+import EditUser from './components/user/EditUser';
+import ViewUser from './components/user/ViewUser';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function Dashboard() {
+    const data = localStorage.getItem('accessToken');
+    const [users, setUsers] = useState([]);
+    const loadUsers = () => {
+        axios
+            .post('http://127.0.0.1:8000/api/auth/me', {
+                headers: {
+                    Authorization: `Bearer ${data}`,
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((res) => {
+                setUsers(res.data);
+            })
+            .catch((error) => console.log(error));
+    };
+    useEffect(() => {
+        loadUsers();
+    }, []);
     return (
         <div id="wrapper">
             <SideBar />
             <div id="content-wrapper" className="d-flex flex-column">
                 <div id="content">
-                    <Header />
+                    <Header users={users} />
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/list-student" element={<Student />} />

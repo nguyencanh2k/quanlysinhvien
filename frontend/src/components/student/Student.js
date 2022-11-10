@@ -39,8 +39,16 @@ function Student() {
         },
         {
             name: 'Gender',
-            selector: (row) => row.gender,
             sortable: true,
+            cell: (row) => {
+                if (row.gender == '0') {
+                    return 'Male';
+                } else if (row.gender == '1') {
+                    return 'Female';
+                } else {
+                    return 'No';
+                }
+            },
         },
         {
             name: 'Identification',
@@ -90,7 +98,7 @@ function Student() {
     }
     return (
         <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Tables</h1>
+            <h1 className="h3 mb-2 text-gray-800">Home/ Student</h1>
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary">Student</h6>
@@ -101,53 +109,6 @@ function Student() {
                 </div>
                 <div className="card-body">
                     <div className="table-responsive">
-                        {/* <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>School</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>School</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                {students.map((student, index) => (
-                                    <tr key={index}>
-                                        <td>{student.id}</td>
-                                        <td>{student.username}</td>
-                                        <td>{student.phone}</td>
-                                        <td>{student.email}</td>
-                                        <td>{student.school_id}</td>
-                                        <td>
-                                            <Link to={`/view-student/${student.id}`} className="btn btn-primary">
-                                                View
-                                            </Link>
-                                            <Link to={`/edit-student/${student.id}`} className="btn btn-success">
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => deleteStudent(student.id)}
-                                                className="btn btn-danger"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table> */}
                         <DataTable columns={columns} data={students} pagination />
                     </div>
                 </div>

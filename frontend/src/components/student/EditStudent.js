@@ -1,17 +1,38 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function AddStudent() {
+function EditStudent() {
     const [username, setUsername] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
-    const [gender, setGender] = useState('0');
+    const [gender, setGender] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [identification, setIdentification] = useState('');
     const [school_id, setSchoolID] = useState('');
+
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    useEffect(() => {
+        axios
+            .get(`http://127.0.0.1:8000/api/student/${id}`)
+            .then((res) => {
+                setUsername(res.data.username);
+                setFirstname(res.data.firstname);
+                setLastname(res.data.lastname);
+                setGender(res.data.gender);
+                setAddress(res.data.address);
+                setPhone(res.data.phone);
+                setEmail(res.data.email);
+                setIdentification(res.data.identification);
+                setSchoolID(res.data.school_id);
+            })
+            .catch((error) => console.log(error));
+    }, []);
+
     const data = {
         username: username,
         firstname: firstname,
@@ -24,24 +45,22 @@ function AddStudent() {
         school_id: school_id,
     };
 
-    const navigate = useNavigate();
-
-    function Submit(e) {
+    function UpdateStudent(e) {
         e.preventDefault();
         axios
-            .post('http://127.0.0.1:8000/api/student', data)
+            .put(`http://127.0.0.1:8000/api/student/${id}`, data)
             .then(navigate('/list-student'))
             .catch((error) => console.log(error));
     }
 
     return (
         <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Tables</h1>
+            <h1 className="h3 mb-2 text-gray-800">Home/ Edit student</h1>
             <div className="row">
                 <div className="col-xl">
                     <div className="card mb-4">
                         <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Add Student</h5>
+                            <h5 className="mb-0">Edit Student</h5>
                         </div>
                         <div className="card-body">
                             <form className="add-student-form">
@@ -182,7 +201,7 @@ function AddStudent() {
                                         <option value="3">Three</option>
                                     </select>
                                 </div>
-                                <button onClick={Submit} className="btn btn-primary btn-update" id="create">
+                                <button onClick={UpdateStudent} type="submit" className="btn btn-primary btn-update">
                                     Send
                                 </button>
                             </form>
@@ -194,4 +213,4 @@ function AddStudent() {
     );
 }
 
-export default AddStudent;
+export default EditStudent;

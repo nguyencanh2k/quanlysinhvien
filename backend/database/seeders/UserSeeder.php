@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -16,6 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->truncate();
+        $array = ['Admin', 'QLHT'];
         for ($i=0; $i < 30; $i++) { 
             DB::table('users')->insert(
                 [
@@ -25,6 +28,7 @@ class UserSeeder extends Seeder
                 'gender' => rand(0,1),
                 'active' => rand(0,1),
                 'is_confirm' => rand(0,1),
+                'role' => Arr::random($array),
                 'phone' => '12345678',
                 'email' => Str::random(10).'@gmail.com',
                 'password' => Hash::make('password'),

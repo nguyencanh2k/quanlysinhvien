@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function AddUser() {
+function EditUser() {
     const [username, setUsername] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -11,6 +11,26 @@ function AddUser() {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    useEffect(() => {
+        axios
+            .get(`http://127.0.0.1:8000/api/user/${id}`)
+            .then((res) => {
+                setUsername(res.data.username);
+                setFirstname(res.data.firstname);
+                setLastname(res.data.lastname);
+                setGender(res.data.gender);
+                setActive(res.data.active);
+                setPhone(res.data.phone);
+                setEmail(res.data.email);
+                setPassword(res.data.password);
+            })
+            .catch((error) => console.log(error));
+    }, []);
+
     const data = {
         username: username,
         firstname: firstname,
@@ -22,24 +42,22 @@ function AddUser() {
         password: password,
     };
 
-    const navigate = useNavigate();
-
-    function Submit(e) {
+    function UpdateUser(e) {
         e.preventDefault();
         axios
-            .post('http://127.0.0.1:8000/api/user', data)
+            .put(`http://127.0.0.1:8000/api/user/${id}`, data)
             .then(navigate('/list-user'))
             .catch((error) => console.log(error));
     }
 
     return (
         <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Tables</h1>
+            <h1 className="h3 mb-2 text-gray-800">Home/ Edit user</h1>
             <div className="row">
                 <div className="col-xl">
                     <div className="card mb-4">
                         <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Add Student</h5>
+                            <h5 className="mb-0">Edit User</h5>
                         </div>
                         <div className="card-body">
                             <form className="add-student-form">
@@ -88,7 +106,7 @@ function AddUser() {
                                             id="defaultRadio1"
                                             defaultChecked
                                         />
-                                        <label className="form-check-label" htmlhtmlFor="defaultRadio1">
+                                        <label className="form-check-label" htmlFor="defaultRadio1">
                                             {' '}
                                             Male{' '}
                                         </label>
@@ -102,14 +120,14 @@ function AddUser() {
                                             value="1"
                                             id="defaultRadio2"
                                         />
-                                        <label className="form-check-label" htmlhtmlFor="defaultRadio2">
+                                        <label className="form-check-label" htmlFor="defaultRadio2">
                                             {' '}
                                             Female{' '}
                                         </label>
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlhtmlFor="exampleFormControlSelect1" className="form-label">
+                                    <label htmlFor="exampleFormControlSelect1" className="form-label">
                                         Active
                                     </label>
                                     <select
@@ -159,7 +177,7 @@ function AddUser() {
                                 <div className="mb-3">
                                     <label className="form-label">Password</label>
                                     <input
-                                        value={password}
+                                        value={password || ''}
                                         onChange={(e) => setPassword(e.target.value)}
                                         type="text"
                                         className="form-control"
@@ -167,7 +185,7 @@ function AddUser() {
                                         placeholder=""
                                     />
                                 </div>
-                                <button onClick={Submit} className="btn btn-primary btn-update" id="create">
+                                <button onClick={UpdateUser} type="submit" className="btn btn-primary btn-update">
                                     Send
                                 </button>
                             </form>
@@ -179,4 +197,4 @@ function AddUser() {
     );
 }
 
-export default AddUser;
+export default EditUser;

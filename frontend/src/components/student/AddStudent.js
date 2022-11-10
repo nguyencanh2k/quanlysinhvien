@@ -1,63 +1,47 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function EditUser() {
+function AddStudent() {
     const [username, setUsername] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('0');
-    const [active, setActive] = useState('');
+    const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const navigate = useNavigate();
-
-    const { id } = useParams();
-    useEffect(() => {
-        axios
-            .get(`http://127.0.0.1:8000/api/user/${id}`)
-            .then((res) => {
-                setUsername(res.data.username);
-                setFirstname(res.data.firstname);
-                setLastname(res.data.lastname);
-                setGender(res.data.gender);
-                setActive(res.data.active);
-                setPhone(res.data.phone);
-                setEmail(res.data.email);
-                setPassword(res.data.password);
-            })
-            .catch((error) => console.log(error));
-    }, []);
-
+    const [identification, setIdentification] = useState('');
+    const [school_id, setSchoolID] = useState('');
     const data = {
         username: username,
         firstname: firstname,
         lastname: lastname,
         gender: gender,
-        active: active,
+        address: address,
         phone: phone,
         email: email,
-        password: password,
+        identification: identification,
+        school_id: school_id,
     };
 
-    function UpdateUser(e) {
+    const navigate = useNavigate();
+
+    function Submit(e) {
         e.preventDefault();
         axios
-            .put(`http://127.0.0.1:8000/api/user/${id}`, data)
-            .then(navigate('/list-user'))
+            .post('http://127.0.0.1:8000/api/student', data)
+            .then(navigate('/list-student'))
             .catch((error) => console.log(error));
     }
 
     return (
         <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Tables</h1>
+            <h1 className="h3 mb-2 text-gray-800">Home/ Add student</h1>
             <div className="row">
                 <div className="col-xl">
                     <div className="card mb-4">
                         <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Edit User</h5>
+                            <h5 className="mb-0">Add Student</h5>
                         </div>
                         <div className="card-body">
                             <form className="add-student-form">
@@ -127,22 +111,15 @@ function EditUser() {
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleFormControlSelect1" className="form-label">
-                                        Active
-                                    </label>
-                                    <select
-                                        value={active}
-                                        onChange={(e) => setActive(e.target.value)}
+                                    <label className="form-label">Address</label>
+                                    <input
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        type="text"
                                         className="form-control"
-                                        id="active"
-                                        aria-label="Default select example"
-                                    >
-                                        <option value="" disabled>
-                                            Open this select menu
-                                        </option>
-                                        <option value="1">Active</option>
-                                        <option value="2">Block</option>
-                                    </select>
+                                        id="address"
+                                        placeholder=""
+                                    />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
@@ -175,17 +152,37 @@ function EditUser() {
                                     <div className="form-text">You can use letters, numbers & periods</div>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Password</label>
-                                    <input
-                                        value={password || ''}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        type="text"
+                                    <label className="form-label" htmlFor="basic-default-message">
+                                        Identification
+                                    </label>
+                                    <textarea
+                                        value={identification}
+                                        onChange={(e) => setIdentification(e.target.value)}
+                                        id="identification"
                                         className="form-control"
-                                        id="password"
-                                        placeholder=""
-                                    />
+                                        placeholder="Hi, Do you have a moment to talk Joe?"
+                                    ></textarea>
                                 </div>
-                                <button onClick={UpdateUser} type="submit" className="btn btn-primary btn-update">
+                                <div className="mb-3">
+                                    <label htmlFor="exampleFormControlSelect1" className="form-label">
+                                        School
+                                    </label>
+                                    <select
+                                        value={school_id}
+                                        onChange={(e) => setSchoolID(e.target.value)}
+                                        className="form-control"
+                                        id="school"
+                                        aria-label="Default select example"
+                                    >
+                                        <option value="" disabled>
+                                            Open this select menu
+                                        </option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <button onClick={Submit} className="btn btn-primary btn-update" id="create">
                                     Send
                                 </button>
                             </form>
@@ -197,4 +194,4 @@ function EditUser() {
     );
 }
 
-export default EditUser;
+export default AddStudent;

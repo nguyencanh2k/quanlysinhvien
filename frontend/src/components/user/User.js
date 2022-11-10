@@ -29,13 +29,27 @@ function User() {
         },
         {
             name: 'Gender',
-            selector: (row) => row.gender,
             sortable: true,
+            cell: (row) => {
+                if (row.gender == '0') {
+                    return 'Male';
+                } else if (row.gender == '1') {
+                    return 'Female';
+                } else {
+                    return 'No';
+                }
+            },
         },
         {
             name: 'Active',
-            selector: (row) => row.active,
             sortable: true,
+            cell: (row) => {
+                if (row.active == '0') {
+                    return 'No';
+                } else {
+                    return 'Yes';
+                }
+            },
         },
         {
             name: 'Phone',
@@ -45,11 +59,6 @@ function User() {
         {
             name: 'Email',
             selector: (row) => row.email,
-            sortable: true,
-        },
-        {
-            name: 'Password',
-            selector: (row) => row.password,
             sortable: true,
         },
         {
@@ -90,7 +99,7 @@ function User() {
     }
     return (
         <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Tables</h1>
+            <h1 className="h3 mb-2 text-gray-800">Home/ User/</h1>
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary">User</h6>
@@ -101,50 +110,6 @@ function User() {
                 </div>
                 <div className="card-body">
                     <div className="table-responsive">
-                        {/* <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Pass</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Pass</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                {users.map((user, index) => (
-                                    <tr key={index}>
-                                        <td>{user.id}</td>
-                                        <td>{user.username}</td>
-                                        <td>{user.phone}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.password}</td>
-                                        <td>
-                                            <Link to={`/view-user/${user.id}`} className="btn btn primary">
-                                                View
-                                            </Link>
-                                            <Link to={`/edit-user/${user.id}`} className="btn btn primary">
-                                                Edit
-                                            </Link>
-                                            <button onClick={() => deleteUser(user.id)} className="btn btn primary">
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table> */}
                         <DataTable columns={columns} data={users} pagination />
                     </div>
                 </div>
