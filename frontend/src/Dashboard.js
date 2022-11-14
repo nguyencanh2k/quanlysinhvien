@@ -35,25 +35,29 @@ function Dashboard() {
         loadUsers();
     }, []);
     return (
-        <div id="wrapper">
-            <SideBar />
-            <div id="content-wrapper" className="d-flex flex-column">
-                <div id="content">
+        <div className="layout-wrapper layout-content-navbar">
+            <div className="layout-container">
+                <SideBar />
+                <div className="layout-page">
                     <Header users={users} />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/list-student" element={<Student />} />
-                        <Route path="/add-student" element={<AddStudent />} />
-                        <Route path="/edit-student/:id" element={<EditStudent />} />
-                        <Route path="/view-student/:id" element={<ViewStudent />} />
-                        <Route path="/list-user" element={<User />} />
-                        <Route path="/add-user" element={<AddUser />} />
-                        <Route path="/edit-user/:id" element={<EditUser />} />
-                        <Route path="/view-user/:id" element={<ViewUser />} />
-                    </Routes>
+                    <div className="content-wrapper">
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/list-student" element={<Student />} />
+                            <Route path="/add-student" element={<AddStudent />} />
+                            <Route path="/edit-student/:id" element={<EditStudent />} />
+                            <Route path="/view-student/:id" element={<ViewStudent />} />
+                            <Route path="/list-user" element={<User />} />
+                            <Route path="/add-user" element={<AddUser />} />
+                            <Route path="/edit-user/:id" element={<EditUser />} />
+                            <Route path="/view-user/:id" element={<ViewUser />} />
+                        </Routes>
+                        <Footer />
+                        <div className="content-backdrop fade"></div>
+                    </div>
                 </div>
-                <Footer />
             </div>
+            <div className="layout-overlay layout-menu-toggle"></div>
         </div>
     );
 }

@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         return $users;
     }
 
@@ -33,6 +33,7 @@ class UserController extends Controller
             'lastname' => 'string|max:255',
             'gender' => 'string|max:255',
             'active' => 'string|max:255',
+            'role' => 'string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|string|max:255',
             'password' => 'required|max:255'

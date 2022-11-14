@@ -49,18 +49,24 @@ function EditStudent() {
         e.preventDefault();
         axios
             .put(`http://127.0.0.1:8000/api/student/${id}`, data)
-            .then(navigate('/list-student'))
+            .then((res) => {
+                navigate(`/view-student/${res.data.id}`);
+            })
             .catch((error) => console.log(error));
     }
 
     return (
-        <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Home/ Edit student</h1>
+        <div className="container-xxl flex-grow-1 container-p-y">
+            <h4 className="fw-bold py-3 mb-4">
+                <span className="text-muted fw-light">Forms/</span> Edit student
+            </h4>
+
             <div className="row">
                 <div className="col-xl">
                     <div className="card mb-4">
                         <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Edit Student</h5>
+                            <h5 className="mb-0">Edit student</h5>
+                            <small className="text-muted float-end">Default label</small>
                         </div>
                         <div className="card-body">
                             <form className="add-student-form">
@@ -107,7 +113,7 @@ function EditStudent() {
                                             name="gender"
                                             value="0"
                                             id="defaultRadio1"
-                                            defaultChecked
+                                            checked={gender == '0'}
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio1">
                                             {' '}
@@ -122,6 +128,7 @@ function EditStudent() {
                                             name="gender"
                                             value="1"
                                             id="defaultRadio2"
+                                            checked={gender == '1'}
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio2">
                                             {' '}
@@ -171,16 +178,15 @@ function EditStudent() {
                                     <div className="form-text">You can use letters, numbers & periods</div>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label" htmlFor="basic-default-message">
-                                        Identification
-                                    </label>
-                                    <textarea
+                                    <label className="form-label">Identification</label>
+                                    <input
                                         value={identification}
                                         onChange={(e) => setIdentification(e.target.value)}
-                                        id="identification"
+                                        type="text"
                                         className="form-control"
-                                        placeholder="Hi, Do you have a moment to talk Joe?"
-                                    ></textarea>
+                                        id="identification"
+                                        placeholder="Identification"
+                                    />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="exampleFormControlSelect1" className="form-label">
@@ -196,9 +202,9 @@ function EditStudent() {
                                         <option value="" disabled>
                                             Open this select menu
                                         </option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option value="1">ThuyLoi University</option>
+                                        <option value="2">HaNoi University</option>
+                                        <option value="3">NEU</option>
                                     </select>
                                 </div>
                                 <button onClick={UpdateStudent} type="submit" className="btn btn-primary btn-update">

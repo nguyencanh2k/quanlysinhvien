@@ -47,12 +47,17 @@ Route::middleware(['isAdminOrQLHT'])->group(function () {
     Route::get('student/{id}', [StudentController::class, 'show']);
     Route::post('student', [StudentController::class, 'store']);
     Route::put('student/{id}', [StudentController::class, 'update']);
-
     Route::get('/user', [UserController::class, 'index']);
     Route::get('user/{id}', [UserController::class, 'show']);
+});
+
+Route::middleware(['isAdmin'])->group(function () {
+    Route::delete('user/{id}', [UserController::class, 'destroy']);
+    Route::delete('student/{id}', [StudentController::class, 'destroy']);
+});
+
+Route::middleware(['isQLHT'])->group(function () {
     Route::post('user', [UserController::class, 'store']);
     Route::put('user/{id}', [UserController::class, 'update']);
 });
-    Route::delete('user/{id}', [UserController::class, 'destroy'])->middleware('isAdmin');
-    Route::delete('student/{id}', [StudentController::class, 'destroy'])->middleware('isAdmin');
 

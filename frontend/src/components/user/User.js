@@ -1,89 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import DataTable from 'react-data-table-component';
+import Pagination from 'react-js-pagination';
 
 function User() {
     const [users, setUsers] = useState([]);
+    const [pages, setPages] = useState([]);
 
-    const columns = [
-        {
-            name: 'ID',
-            selector: (row) => row.id,
-            sortable: true,
-        },
-        {
-            name: 'Username',
-            selector: (row) => row.username,
-            sortable: true,
-        },
-        {
-            name: 'Firstname',
-            selector: (row) => row.firstname,
-            sortable: true,
-        },
-        {
-            name: 'Lastname',
-            selector: (row) => row.lastname,
-            sortable: true,
-        },
-        {
-            name: 'Gender',
-            sortable: true,
-            cell: (row) => {
-                if (row.gender == '0') {
-                    return 'Male';
-                } else if (row.gender == '1') {
-                    return 'Female';
-                } else {
-                    return 'No';
-                }
-            },
-        },
-        {
-            name: 'Active',
-            sortable: true,
-            cell: (row) => {
-                if (row.active == '0') {
-                    return 'No';
-                } else {
-                    return 'Yes';
-                }
-            },
-        },
-        {
-            name: 'Phone',
-            selector: (row) => row.phone,
-            sortable: true,
-        },
-        {
-            name: 'Email',
-            selector: (row) => row.email,
-            sortable: true,
-        },
-        {
-            name: 'Action',
-            cell: (row) => (
-                <div className="m-2">
-                    <Link to={`/view-user/${row.id}`} className="btn btn-primary btn-sm">
-                        View
-                    </Link>
-                    <Link to={`/edit-user/${row.id}`} className="btn btn-success btn-sm">
-                        Edit
-                    </Link>
-                    <Link onClick={() => deleteUser(row.id)} className="btn btn-danger btn-sm">
-                        Delete
-                    </Link>
-                </div>
-            ),
-        },
-    ];
-
-    const loadUsers = () => {
+    const loadUsers = (pageNumber = 1) => {
         axios
-            .get('http://127.0.0.1:8000/api/user')
+            .get(`http://127.0.0.1:8000/api/user?page=${pageNumber}`)
             .then((res) => {
-                setUsers(res.data.reverse());
+                setUsers(res.data.data);
+                setPages(res.data);
             })
             .catch((error) => console.log(error));
     };
@@ -98,19 +27,72 @@ function User() {
             .catch((error) => console.log(error));
     }
     return (
-        <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Home/ User/</h1>
-            <div className="card shadow mb-4">
-                <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">User</h6>
-                    <hr></hr>
+        <div className="container-xxl flex-grow-1 container-p-y">
+            <h4 className="fw-bold py-3 mb-4">
+                <span className="text-muted fw-light">Home /</span> User
+            </h4>
+
+            <div className="card">
+                <div className="card-header d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">User</h5>
                     <Link to="/add-user" className="btn btn-info">
                         Add
                     </Link>
                 </div>
-                <div className="card-body">
-                    <div className="table-responsive">
-                        <DataTable columns={columns} data={users} pagination />
+                <div className="table-responsive text-nowrap">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Active</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="table-border-bottom-0">
+                            {users &&
+                                users.map((user, index) => (
+                                    <tr key={index}>
+                                        <td>{user.id}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.phone}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.gender == 0 ? 'Male' : 'Female'}</td>
+                                        <td>{user.active == 0 ? 'No' : 'Yes'}</td>
+                                        <td>{user.role}</td>
+                                        <td>
+                                            <Link to={`/view-user/${user.id}`} className="btn btn-primary btn-sm">
+                                                View
+                                            </Link>
+                                            <Link to={`/edit-user/${user.id}`} className="btn btn-success btn-sm">
+                                                Edit
+                                            </Link>
+                                            <button
+                                                onClick={() => deleteUser(user.id)}
+                                                className="btn btn-danger btn-sm"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </table>
+                    <div className="d-flex justify-content-center">
+                        <Pagination
+                            activePage={pages.current_page}
+                            itemsCountPerPage={pages.per_page}
+                            totalItemsCount={pages.total}
+                            onChange={(pageNumber) => loadUsers(pageNumber)}
+                            itemClass="page-link"
+                            linkClass="page-link"
+                            firstPageText="First"
+                            lastPageText="Last"
+                        />
                     </div>
                 </div>
             </div>

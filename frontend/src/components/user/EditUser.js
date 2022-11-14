@@ -8,6 +8,7 @@ function EditUser() {
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('0');
     const [active, setActive] = useState('');
+    const [role, setRole] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +25,7 @@ function EditUser() {
                 setLastname(res.data.lastname);
                 setGender(res.data.gender);
                 setActive(res.data.active);
+                setRole(res.data.role);
                 setPhone(res.data.phone);
                 setEmail(res.data.email);
                 setPassword(res.data.password);
@@ -37,6 +39,7 @@ function EditUser() {
         lastname: lastname,
         gender: gender,
         active: active,
+        role: role,
         phone: phone,
         email: email,
         password: password,
@@ -46,18 +49,24 @@ function EditUser() {
         e.preventDefault();
         axios
             .put(`http://127.0.0.1:8000/api/user/${id}`, data)
-            .then(navigate('/list-user'))
+            .then((res) => {
+                navigate(`/view-user/${res.data.id}`);
+            })
             .catch((error) => console.log(error));
     }
 
     return (
-        <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Home/ Edit user</h1>
+        <div className="container-xxl flex-grow-1 container-p-y">
+            <h4 className="fw-bold py-3 mb-4">
+                <span className="text-muted fw-light">Forms/</span> Edit user
+            </h4>
+
             <div className="row">
                 <div className="col-xl">
                     <div className="card mb-4">
                         <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5 className="mb-0">Edit User</h5>
+                            <h5 className="mb-0">Edit user</h5>
+                            <small className="text-muted float-end">Default label</small>
                         </div>
                         <div className="card-body">
                             <form className="add-student-form">
@@ -104,7 +113,7 @@ function EditUser() {
                                             name="gender"
                                             value="0"
                                             id="defaultRadio1"
-                                            defaultChecked
+                                            checked={gender == '0'}
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio1">
                                             {' '}
@@ -119,6 +128,7 @@ function EditUser() {
                                             name="gender"
                                             value="1"
                                             id="defaultRadio2"
+                                            checked={gender == '1'}
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio2">
                                             {' '}
@@ -140,8 +150,26 @@ function EditUser() {
                                         <option value="" disabled>
                                             Open this select menu
                                         </option>
+                                        <option value="0">Block</option>
                                         <option value="1">Active</option>
-                                        <option value="2">Block</option>
+                                    </select>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="exampleFormControlSelect1" className="form-label">
+                                        Role
+                                    </label>
+                                    <select
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value)}
+                                        className="form-control"
+                                        id="role"
+                                        aria-label="Default select example"
+                                    >
+                                        <option value="" disabled>
+                                            Open this select menu
+                                        </option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="QLHT">QLHT</option>
                                     </select>
                                 </div>
                                 <div className="mb-3">

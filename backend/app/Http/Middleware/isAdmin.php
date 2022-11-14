@@ -17,10 +17,9 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->role == 'Admin') {
-            return $next($request);
-       }
-
-       return response()->json(['error' => 'You have not Admin access'], 401);
+        if (Auth::user() &&  Auth::user()->role != 'Admin') {
+            return response()->json(['error' => 'You have not Admin access'], 401);
+        }
+        return $next($request);
     }
 }

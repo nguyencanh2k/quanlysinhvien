@@ -1,88 +1,17 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import DataTable from 'react-data-table-component';
-
+import Pagination from 'react-js-pagination';
 function Student() {
     const [students, setStudents] = useState([]);
+    const [pages, setPages] = useState([]);
 
-    const columns = [
-        {
-            name: 'ID',
-            selector: (row) => row.id,
-            sortable: true,
-        },
-        {
-            name: 'Username',
-            selector: (row) => row.username,
-            sortable: true,
-        },
-        {
-            name: 'Firstname',
-            selector: (row) => row.firstname,
-            sortable: true,
-        },
-        {
-            name: 'Lastname',
-            selector: (row) => row.lastname,
-            sortable: true,
-        },
-        {
-            name: 'Phone',
-            selector: (row) => row.phone,
-            sortable: true,
-        },
-        {
-            name: 'Email',
-            selector: (row) => row.email,
-            sortable: true,
-        },
-        {
-            name: 'Gender',
-            sortable: true,
-            cell: (row) => {
-                if (row.gender == '0') {
-                    return 'Male';
-                } else if (row.gender == '1') {
-                    return 'Female';
-                } else {
-                    return 'No';
-                }
-            },
-        },
-        {
-            name: 'Identification',
-            selector: (row) => row.identification,
-            sortable: true,
-        },
-        {
-            name: 'School_ID',
-            selector: (row) => row.school_id,
-            sortable: true,
-        },
-        {
-            name: 'Action',
-            cell: (row) => (
-                <div className="m-2">
-                    <Link to={`/view-student/${row.id}`} className="btn btn-primary btn-sm">
-                        View
-                    </Link>
-                    <Link to={`/edit-student/${row.id}`} className="btn btn-success btn-sm">
-                        Edit
-                    </Link>
-                    <Link onClick={() => deleteStudent(row.id)} className="btn btn-danger btn-sm">
-                        Delete
-                    </Link>
-                </div>
-            ),
-        },
-    ];
-
-    const loadStudents = async () => {
+    const loadStudents = async (pageNumber = 1) => {
         await axios
-            .get('http://127.0.0.1:8000/api/student')
+            .get(`http://127.0.0.1:8000/api/student?page=${pageNumber}`)
             .then((res) => {
-                setStudents(res.data.reverse());
+                setStudents(res.data.data);
+                setPages(res.data);
             })
             .catch((error) => console.log(error));
     };
@@ -97,19 +26,73 @@ function Student() {
             .catch((error) => console.log(error));
     }
     return (
-        <div className="container-fluid">
-            <h1 className="h3 mb-2 text-gray-800">Home/ Student</h1>
-            <div className="card shadow mb-4">
-                <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">Student</h6>
-                    <hr></hr>
+        <div className="container-xxl flex-grow-1 container-p-y">
+            <h4 className="fw-bold py-3 mb-4">
+                <span className="text-muted fw-light">Home /</span> Student
+            </h4>
+
+            <div className="card">
+                <div className="card-header d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">Student</h5>
                     <Link to="/add-student" className="btn btn-info">
                         Add
                     </Link>
                 </div>
-                <div className="card-body">
-                    <div className="table-responsive">
-                        <DataTable columns={columns} data={students} pagination />
+                <div className="table-responsive text-nowrap">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>School</th>
+                                <th>Identification</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="table-border-bottom-0">
+                            {students.map((student, index) => (
+                                <tr key={index}>
+                                    <td>{student.id}</td>
+                                    <td>{student.username}</td>
+                                    <td>{student.phone}</td>
+                                    <td>{student.email}</td>
+                                    <td>{student.address}</td>
+                                    <td>{student.gender == 0 ? 'Male' : 'Female'}</td>
+                                    <td>{student.school_id}</td>
+                                    <td>{student.identification}</td>
+                                    <td>
+                                        <Link to={`/view-student/${student.id}`} className="btn btn-primary btn-sm">
+                                            View
+                                        </Link>
+                                        <Link to={`/edit-student/${student.id}`} className="btn btn-success btn-sm">
+                                            Edit
+                                        </Link>
+                                        <button
+                                            onClick={() => deleteStudent(student.id)}
+                                            className="btn btn-danger btn-sm"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="d-flex justify-content-center">
+                        <Pagination
+                            activePage={pages.current_page}
+                            itemsCountPerPage={pages.per_page}
+                            totalItemsCount={pages.total}
+                            onChange={(pageNumber) => loadStudents(pageNumber)}
+                            itemClass="page-link"
+                            linkClass="page-link"
+                            firstPageText="First"
+                            lastPageText="Last"
+                        />
                     </div>
                 </div>
             </div>

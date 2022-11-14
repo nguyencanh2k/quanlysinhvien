@@ -28,104 +28,139 @@ function Register() {
     }
 
     return (
-        <div className="container">
-            <div className="card o-hidden border-0 shadow-lg my-5">
-                <div className="card-body p-0">
-                    <div className="row">
-                        <div className="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                        <div className="col-lg-7">
-                            <div className="p-5">
-                                <div className="text-center">
-                                    <h1 className="h4 text-gray-900 mb-4">Create an Account!</h1>
+        <div className="container-xxl">
+            <div className="authentication-wrapper authentication-basic container-p-y">
+                <div className="authentication-inner">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="app-brand justify-content-center">
+                                <a href="index.html" className="app-brand-link gap-2">
+                                    <span className="app-brand-text demo text-body fw-bolder">Sneat</span>
+                                </a>
+                            </div>
+                            <h4 className="mb-2">Adventure starts here 🚀</h4>
+                            <p className="mb-4">Make your app management easy and fun!</p>
+
+                            <form id="formAuthentication" className="mb-3" action="index.html" method="POST">
+                                <div className="mb-3">
+                                    <label for="username" className="form-label">
+                                        Username
+                                    </label>
+                                    <input
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        id="username"
+                                        name="username"
+                                        placeholder="Enter your username"
+                                        autofocus
+                                    />
                                 </div>
-                                <form className="user">
-                                    <div className="form-group row">
-                                        <div className="col-sm-4 mb-3 mb-sm-0">
-                                            <input
-                                                value={username}
-                                                onChange={(e) => setUsername(e.target.value)}
-                                                type="text"
-                                                className="form-control form-control-user"
-                                                id="exampleFirstName"
-                                                placeholder="User Name"
-                                            />
-                                        </div>
-                                        <div className="col-sm-4 mb-3 mb-sm-0">
-                                            <input
-                                                value={firstname}
-                                                onChange={(e) => setFirstname(e.target.value)}
-                                                type="text"
-                                                className="form-control form-control-user"
-                                                id="exampleFirstName"
-                                                placeholder="First Name"
-                                            />
-                                        </div>
-                                        <div className="col-sm-4">
-                                            <input
-                                                value={lastname}
-                                                onChange={(e) => setLastname(e.target.value)}
-                                                type="text"
-                                                className="form-control form-control-user"
-                                                id="exampleLastName"
-                                                placeholder="Last Name"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
-                                        <div className="col-sm-6 mb-3 mb-sm-0">
-                                            <input
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                type="email"
-                                                className="form-control form-control-user"
-                                                id="exampleInputEmail"
-                                                placeholder="Email Address"
-                                            />
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <input
-                                                value={phone}
-                                                onChange={(e) => setPhone(e.target.value)}
-                                                type="text"
-                                                className="form-control form-control-user"
-                                                id="examplePhoneNumber"
-                                                placeholder="Phone Number"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
+                                <div className="mb-3">
+                                    <label for="firstname" className="form-label">
+                                        Firstname
+                                    </label>
+                                    <input
+                                        value={firstname}
+                                        onChange={(e) => setFirstname(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        id="firstname"
+                                        name="firstname"
+                                        placeholder="Enter your firstname"
+                                        autofocus
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label for="lastname" className="form-label">
+                                        Lastname
+                                    </label>
+                                    <input
+                                        value={lastname}
+                                        onChange={(e) => setLastname(e.target.value)}
+                                        type="text"
+                                        className="form-control"
+                                        id="lastname"
+                                        name="lastname"
+                                        placeholder="Enter your lastname"
+                                        autofocus
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label for="email" className="form-label">
+                                        Email
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="form-control"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Enter your email"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label for="phone" className="form-label">
+                                        Phone
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        className="form-control"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="Enter your phone"
+                                    />
+                                </div>
+                                <div className="mb-3 form-password-toggle">
+                                    <label className="form-label" for="password">
+                                        Password
+                                    </label>
+                                    <div className="input-group input-group-merge">
                                         <input
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             type="password"
-                                            className="form-control form-control-user"
-                                            id="exampleInputPassword"
-                                            placeholder="Password"
+                                            id="password"
+                                            className="form-control"
+                                            name="password"
+                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                            aria-describedby="password"
                                         />
+                                        <span className="input-group-text cursor-pointer">
+                                            <i className="bx bx-hide"></i>
+                                        </span>
                                     </div>
-                                    <a onClick={Submit} className="btn btn-primary btn-user btn-block">
-                                        Register Account
-                                    </a>
-                                    <hr></hr>
-                                    <a href="index.html" className="btn btn-google btn-user btn-block">
-                                        <i className="fab fa-google fa-fw"></i> Register with Google
-                                    </a>
-                                    <a href="index.html" className="btn btn-facebook btn-user btn-block">
-                                        <i className="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                    </a>
-                                </form>
-                                <hr></hr>
-                                <div className="text-center">
-                                    <a className="small" href="forgot-password.html">
-                                        Forgot Password?
-                                    </a>
                                 </div>
-                                <div className="text-center">
-                                    <a className="small" href="/login">
-                                        Already have an account? Login!
-                                    </a>
+
+                                <div className="mb-3">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="terms-conditions"
+                                            name="terms"
+                                        />
+                                        <label className="form-check-label" for="terms-conditions">
+                                            I agree to
+                                            <a href="javascript:void(0);">privacy policy & terms</a>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
+                                <button onClick={Submit} className="btn btn-primary d-grid w-100">
+                                    Sign up
+                                </button>
+                            </form>
+
+                            <p className="text-center">
+                                <span>Already have an account?</span>
+                                <a href="/login">
+                                    <span>Sign in instead</span>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -2,11 +2,9 @@ import React from 'react';
 
 function Footer() {
     return (
-        <footer className="sticky-footer bg-white">
-            <div className="container my-auto">
-                <div className="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2022</span>
-                </div>
+        <footer className="content-footer footer bg-footer-theme">
+            <div className="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div className="mb-2 mb-md-0">©2022, made with ❤️ by NC</div>
             </div>
         </footer>
     );

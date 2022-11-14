@@ -15,109 +15,88 @@ function Header({ users }) {
         localStorage.removeItem('accessToken');
     }
     return (
-        <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
-                <i className="fa fa-bars"></i>
-            </button>
+        <nav
+            className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+        >
+            <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a className="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i className="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
 
-            <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div className="input-group">
-                    <input
-                        type="text"
-                        className="form-control bg-light border-0 small"
-                        placeholder="Search for..."
-                        aria-label="Search"
-                        aria-describedby="basic-addon2"
-                    />
-                    <div className="input-group-append">
-                        <button className="btn btn-primary" type="button">
-                            <i className="fas fa-search fa-sm"></i>
-                        </button>
+            <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                <div className="navbar-nav align-items-center">
+                    <div className="nav-item d-flex align-items-center">
+                        <i className="bx bx-search fs-4 lh-0"></i>
+                        <input
+                            type="text"
+                            className="form-control border-0 shadow-none"
+                            placeholder="Search..."
+                            aria-label="Search..."
+                        />
                     </div>
                 </div>
-            </form>
 
-            <ul className="navbar-nav ml-auto">
-                <li className="nav-item dropdown no-arrow d-sm-none">
-                    <a
-                        className="nav-link dropdown-toggle"
-                        href="#"
-                        id="searchDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <i className="fas fa-search fa-fw"></i>
-                    </a>
-                    <div
-                        className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                        aria-labelledby="searchDropdown"
-                    >
-                        <form className="form-inline mr-auto w-100 navbar-search">
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control bg-light border-0 small"
-                                    placeholder="Search for..."
-                                    aria-label="Search"
-                                    aria-describedby="basic-addon2"
-                                />
-                                <div className="input-group-append">
-                                    <button className="btn btn-primary" type="button">
-                                        <i className="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-
-                <div className="topbar-divider d-none d-sm-block"></div>
-
-                <li className="nav-item dropdown no-arrow">
-                    <a
-                        className="nav-link dropdown-toggle"
-                        href="#"
-                        id="userDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{users.username}</span>
-                        <img className="img-profile rounded-circle" src="assets/img/undraw_profile.svg" />
-                    </a>
-                    <div
-                        className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="userDropdown"
-                    >
-                        <Link to={`/view-user/${users.id}`} className="dropdown-item" href="#">
-                            <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </Link>
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
-                        </a>
-                        <div className="dropdown-divider"></div>
-                        <Link
-                            className="dropdown-item"
-                            to={'/login'}
-                            onClick={logOut}
-                            data-toggle="modal"
-                            data-target="#logoutModal"
+                <ul className="navbar-nav flex-row align-items-center ms-auto">
+                    <li className="nav-item navbar-dropdown dropdown-user dropdown">
+                        <a
+                            className="nav-link dropdown-toggle hide-arrow"
+                            href="javascript:void(0);"
+                            data-bs-toggle="dropdown"
                         >
-                            <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
-                        </Link>
-                    </div>
-                </li>
-            </ul>
+                            <div className="avatar avatar-online">
+                                <img src="../assets/img/avatars/1.png" alt className="w-px-40 h-auto rounded-circle" />
+                            </div>
+                        </a>
+                        <ul className="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a className="dropdown-item" href="#">
+                                    <div className="d-flex">
+                                        <div className="flex-shrink-0 me-3">
+                                            <div className="avatar avatar-online">
+                                                <img
+                                                    src="../assets/img/avatars/1.png"
+                                                    alt
+                                                    className="w-px-40 h-auto rounded-circle"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex-grow-1">
+                                            <span className="fw-semibold d-block">{users.username}</span>
+                                            <small className="text-muted">{users.username}</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <div className="dropdown-divider"></div>
+                            </li>
+                            <li>
+                                <Link to={`/view-user/${users.id}`} className="dropdown-item" href="#">
+                                    <i className="bx bx-user me-2"></i>
+                                    <span className="align-middle">My Profile</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <a className="dropdown-item" href="#">
+                                    <i className="bx bx-cog me-2"></i>
+                                    <span className="align-middle">Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div className="dropdown-divider"></div>
+                            </li>
+                            <li>
+                                <Link className="dropdown-item" to={'/login'} onClick={logOut}>
+                                    <i className="bx bx-power-off me-2"></i>
+                                    <span className="align-middle">Log Out</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     );
 }
