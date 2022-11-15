@@ -35,6 +35,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="username"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -45,6 +46,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="firstname"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -55,6 +57,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="lastname"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -97,6 +100,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="active"
                                         aria-label="Default select example"
+                                        disabled
                                     >
                                         <option value="" disabled>
                                             Open this select menu
@@ -114,6 +118,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="role"
                                         aria-label="Default select example"
+                                        disabled
                                     >
                                         <option value="" disabled>
                                             Open this select menu
@@ -130,6 +135,7 @@ function ViewUser() {
                                         className="form-control"
                                         id="phone"
                                         placeholder=""
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -143,6 +149,7 @@ function ViewUser() {
                                             placeholder="john.doe"
                                             aria-label="john.doe"
                                             aria-describedby="basic-default-email2"
+                                            disabled
                                         />
                                         <span className="input-group-text" id="basic-default-email2">
                                             @example.com

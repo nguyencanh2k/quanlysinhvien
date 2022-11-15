@@ -79,6 +79,7 @@ function EditUser() {
                                         className="form-control"
                                         id="username"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">

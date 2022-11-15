@@ -41,7 +41,13 @@ function Register() {
                             <h4 className="mb-2">Adventure starts here 🚀</h4>
                             <p className="mb-4">Make your app management easy and fun!</p>
 
-                            <form id="formAuthentication" className="mb-3" action="index.html" method="POST">
+                            <form
+                                id="formAuthentication"
+                                className="mb-3"
+                                action="index.html"
+                                method="POST"
+                                onSubmit={Submit}
+                            >
                                 <div className="mb-3">
                                     <label for="username" className="form-label">
                                         Username
@@ -55,6 +61,7 @@ function Register() {
                                         name="username"
                                         placeholder="Enter your username"
                                         autofocus
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -70,6 +77,7 @@ function Register() {
                                         name="firstname"
                                         placeholder="Enter your firstname"
                                         autofocus
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -85,6 +93,7 @@ function Register() {
                                         name="lastname"
                                         placeholder="Enter your lastname"
                                         autofocus
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -99,6 +108,7 @@ function Register() {
                                         id="email"
                                         name="email"
                                         placeholder="Enter your email"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -113,6 +123,7 @@ function Register() {
                                         id="phone"
                                         name="phone"
                                         placeholder="Enter your phone"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">
@@ -129,6 +140,7 @@ function Register() {
                                             name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="password"
+                                            required
                                         />
                                         <span className="input-group-text cursor-pointer">
                                             <i className="bx bx-hide"></i>
@@ -150,7 +162,7 @@ function Register() {
                                         </label>
                                     </div>
                                 </div>
-                                <button onClick={Submit} className="btn btn-primary d-grid w-100">
+                                <button type="submit" className="btn btn-primary d-grid w-100">
                                     Sign up
                                 </button>
                             </form>

@@ -74,7 +74,7 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $student = Student::findOrFail($id);
-        $student->update(array_merge($request->all(), ['updated_by' => 'admin']));
+        $student->update(array_merge($request->except('username'), ['updated_by' => 'admin']));
         return $student;
     }
 

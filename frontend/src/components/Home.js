@@ -75,7 +75,7 @@ function Home() {
                                         <div className="avatar flex-shrink-0">
                                             <img
                                                 src="../assets/img/icons/unicons/wallet-info.png"
-                                                alt="Credit Card"
+                                                alt="chart success"
                                                 className="rounded"
                                             />
                                         </div>
@@ -83,14 +83,14 @@ function Home() {
                                             <button
                                                 className="btn p-0"
                                                 type="button"
-                                                id="cardOpt6"
+                                                id="cardOpt3"
                                                 data-bs-toggle="dropdown"
                                                 aria-haspopup="true"
                                                 aria-expanded="false"
                                             >
                                                 <i className="bx bx-dots-vertical-rounded"></i>
                                             </button>
-                                            <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                            <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                                                 <a className="dropdown-item" href="javascript:void(0);">
                                                     View More
                                                 </a>
@@ -100,8 +100,8 @@ function Home() {
                                             </div>
                                         </div>
                                     </div>
-                                    <span>User</span>
-                                    <h3 className="card-title text-nowrap mb-1">{users.length}</h3>
+                                    <span className="fw-semibold d-block mb-1">User</span>
+                                    <h3 className="card-title mb-2">{users.length}</h3>
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import Pagination from 'react-js-pagination';
 function Student() {
     const [students, setStudents] = useState([]);
     const [pages, setPages] = useState([]);
+    const [searchTitle, setSearchTitle] = useState('');
 
     const loadStudents = async (pageNumber = 1) => {
         await axios
@@ -38,6 +39,47 @@ function Student() {
                         Add
                     </Link>
                 </div>
+                <div className="row m-2">
+                    <div class="input-group input-group-merge p-4 w-25">
+                        <span class="input-group-text" id="basic-addon-search31">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Username..."
+                            aria-label="Search..."
+                            aria-describedby="basic-addon-search31"
+                            onChange={(e) => setSearchTitle(e.target.value)}
+                        />
+                    </div>
+                    <div class="input-group input-group-merge p-4 w-25">
+                        <span class="input-group-text" id="basic-addon-search31">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Phone..."
+                            aria-label="Search..."
+                            aria-describedby="basic-addon-search31"
+                            // onChange={(e) => setSearchTitle(e.target.value)}
+                        />
+                    </div>
+                    <div class="input-group input-group-merge p-4 w-25">
+                        <span class="input-group-text" id="basic-addon-search31">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Email..."
+                            aria-label="Search..."
+                            aria-describedby="basic-addon-search31"
+                            // onChange={(e) => setSearchTitle(e.target.value)}
+                        />
+                    </div>
+                </div>
                 <div className="table-responsive text-nowrap">
                     <table className="table table-striped">
                         <thead>
@@ -54,32 +96,40 @@ function Student() {
                             </tr>
                         </thead>
                         <tbody className="table-border-bottom-0">
-                            {students.map((student, index) => (
-                                <tr key={index}>
-                                    <td>{student.id}</td>
-                                    <td>{student.username}</td>
-                                    <td>{student.phone}</td>
-                                    <td>{student.email}</td>
-                                    <td>{student.address}</td>
-                                    <td>{student.gender == 0 ? 'Male' : 'Female'}</td>
-                                    <td>{student.school_id}</td>
-                                    <td>{student.identification}</td>
-                                    <td>
-                                        <Link to={`/view-student/${student.id}`} className="btn btn-primary btn-sm">
-                                            View
-                                        </Link>
-                                        <Link to={`/edit-student/${student.id}`} className="btn btn-success btn-sm">
-                                            Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => deleteStudent(student.id)}
-                                            className="btn btn-danger btn-sm"
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {students
+                                .filter((value) => {
+                                    if (searchTitle === '') {
+                                        return value;
+                                    } else if (value.username.toLowerCase().includes(searchTitle.toLowerCase())) {
+                                        return value;
+                                    }
+                                })
+                                .map((student, index) => (
+                                    <tr key={index}>
+                                        <td>{student.id}</td>
+                                        <td>{student.username}</td>
+                                        <td>{student.phone}</td>
+                                        <td>{student.email}</td>
+                                        <td>{student.address}</td>
+                                        <td>{student.gender == 0 ? 'Male' : 'Female'}</td>
+                                        <td>{student.school_id}</td>
+                                        <td>{student.identification}</td>
+                                        <td>
+                                            <Link to={`/view-student/${student.id}`} className="btn btn-primary btn-sm">
+                                                View
+                                            </Link>
+                                            <Link to={`/edit-student/${student.id}`} className="btn btn-success btn-sm">
+                                                Edit
+                                            </Link>
+                                            <button
+                                                onClick={() => deleteStudent(student.id)}
+                                                className="btn btn-danger btn-sm"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                     <div className="d-flex justify-content-center">

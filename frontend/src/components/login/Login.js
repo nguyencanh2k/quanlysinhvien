@@ -154,6 +154,7 @@ const Login = () => {
                                         name="email-username"
                                         placeholder="Enter your email"
                                         autofocus
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">
@@ -175,6 +176,7 @@ const Login = () => {
                                             name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="password"
+                                            required
                                         />
                                         <span className="input-group-text cursor-pointer">
                                             <i className="bx bx-hide"></i>

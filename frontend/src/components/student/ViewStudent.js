@@ -34,6 +34,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="username"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -44,6 +45,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="firstname"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -54,6 +56,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="lastname"
                                         placeholder="John Doe"
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -91,6 +94,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="address"
                                         placeholder=""
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -101,6 +105,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="phone"
                                         placeholder=""
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -114,6 +119,7 @@ function ViewStudent() {
                                             placeholder="john.doe"
                                             aria-label="john.doe"
                                             aria-describedby="basic-default-email2"
+                                            disabled
                                         />
                                         <span className="input-group-text" id="basic-default-email2">
                                             @example.com
@@ -128,6 +134,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="identification"
                                         placeholder=""
+                                        disabled
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -139,6 +146,7 @@ function ViewStudent() {
                                         className="form-control"
                                         id="school"
                                         aria-label="Default select example"
+                                        disabled
                                     >
                                         <option value="" disabled>
                                             Open this select menu

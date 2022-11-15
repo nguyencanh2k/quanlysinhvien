@@ -50,7 +50,7 @@ function AddStudent() {
                             <small className="text-muted float-end">Default label</small>
                         </div>
                         <div className="card-body">
-                            <form className="add-student-form">
+                            <form className="add-student-form" onSubmit={Submit}>
                                 <div className="mb-3">
                                     <label className="form-label">User Name</label>
                                     <input
@@ -60,6 +60,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="username"
                                         placeholder="John Doe"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -71,6 +72,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="firstname"
                                         placeholder="John Doe"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -82,6 +84,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="lastname"
                                         placeholder="John Doe"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -95,6 +98,7 @@ function AddStudent() {
                                             value="0"
                                             id="defaultRadio1"
                                             defaultChecked
+                                            required
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio1">
                                             {' '}
@@ -109,6 +113,7 @@ function AddStudent() {
                                             name="gender"
                                             value="1"
                                             id="defaultRadio2"
+                                            required
                                         />
                                         <label className="form-check-label" htmlFor="defaultRadio2">
                                             {' '}
@@ -125,6 +130,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="address"
                                         placeholder=""
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -136,6 +142,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="phone"
                                         placeholder=""
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -150,6 +157,7 @@ function AddStudent() {
                                             placeholder="john.doe"
                                             aria-label="john.doe"
                                             aria-describedby="basic-default-email2"
+                                            required
                                         />
                                         <span className="input-group-text" id="basic-default-email2">
                                             @example.com
@@ -166,6 +174,7 @@ function AddStudent() {
                                         type="text"
                                         className="form-control"
                                         placeholder=""
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -178,6 +187,7 @@ function AddStudent() {
                                         className="form-control"
                                         id="school"
                                         aria-label="Default select example"
+                                        required
                                     >
                                         <option value="" disabled>
                                             Open this select menu
@@ -187,7 +197,12 @@ function AddStudent() {
                                         <option value="3">NEU</option>
                                     </select>
                                 </div>
-                                <button onClick={Submit} className="btn btn-primary btn-update" id="create">
+                                <button
+                                    type="submit"
+                                    // onClick={Submit}
+                                    className="btn btn-primary btn-update"
+                                    id="create"
+                                >
                                     Send
                                 </button>
                             </form>

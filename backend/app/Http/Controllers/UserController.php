@@ -76,7 +76,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->update(array_merge($request->all(), ['password' => bcrypt($request->password), 'updated_by' => 'admin']));
+        $user->update(array_merge($request->except('username'), ['password' => bcrypt($request->password), 'updated_by' => 'admin']));
         return $user;
     }
 
