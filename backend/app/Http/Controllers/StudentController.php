@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 class StudentController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(['role:Admin']);
         // $this->middleware(['role:QLHT']);
     }
     /**

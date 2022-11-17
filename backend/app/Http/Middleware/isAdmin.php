@@ -17,7 +17,7 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() &&  Auth::user()->role != 'Admin') {
+        if (Auth::check() &&  Auth::user()->hasRole('QLHT') && $request->role == 'Admin') {
             return response()->json(['error' => 'You have not Admin access'], 401);
         }
         return $next($request);

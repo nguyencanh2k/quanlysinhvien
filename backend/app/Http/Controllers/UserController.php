@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(['role:Admin']);
         // $this->middleware(['role:QLHT']);
     }
     
@@ -45,13 +48,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->except('role'), [
             'username' => 'required|string|max:255|unique:users,username',
             'firstname' => 'string|max:255',
             'lastname' => 'string|max:255',
             'gender' => 'string|max:255',
             'active' => 'string|max:255',
-            'role' => 'string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email|string|max:255|unique:users,email',
             'password' => 'required|max:255'
@@ -62,6 +64,8 @@ class UserController extends Controller
         $user = User::create(array_merge($validator->validated(), 
             ['password' => bcrypt($request->password),
             'created_by' => 'admin', 'updated_by' => 'admin']));
+        $user_role = User::find($user->id);
+        $user_role->assignRole($request->role);
         return response()->json([
             'message' => 'User successfully created',
             'user' => $user
