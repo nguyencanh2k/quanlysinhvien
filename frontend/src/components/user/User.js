@@ -7,9 +7,11 @@ function User() {
     const [users, setUsers] = useState([]);
     const [pages, setPages] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const [searchType, setSearchType] = useState('');
     const [record, setRecord] = useState(null);
     const data = {
         search: searchInput,
+        searchType: searchType,
         record: record,
     };
     const loadUsers = (pageNumber = 1) => {
@@ -67,13 +69,20 @@ function User() {
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
                         </div>
-                        {/* <div className="input-group input-group-merge p-4 w-25">
-                            <select className="form-control" id="role" aria-label="Default select example">
+                        <div className="input-group input-group-merge p-4 w-25">
+                            <select
+                                className="form-control"
+                                id="role"
+                                aria-label="Default select example"
+                                value={searchType}
+                                onChange={(e) => setSearchType(e.target.value)}
+                            >
                                 <option value="">Open this select menu</option>
-                                <option value="0">Admin</option>
-                                <option value="1">QLHT</option>
+                                <option value="username">Username</option>
+                                <option value="phone">Phone</option>
+                                <option value="email">Email</option>
                             </select>
-                        </div> */}
+                        </div>
                         <div className="p-4 w-25">
                             <button type="submit" onClick={SearchSubmit} className="btn btn-primary btn-update">
                                 Send

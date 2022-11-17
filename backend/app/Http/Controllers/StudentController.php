@@ -25,14 +25,18 @@ class StudentController extends Controller
         $gender = $request->searchGender;
         $records = $request->record;
         $query = Student::query();
-        if($key_words){
-            $query->where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
-            ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
-            ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%');
+        if($key_words ){
+            $query->where(function($query) use ($key_words) {
+                $query->orWhere('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
+                ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
+                ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%');
+            });
+            
         }
-        if($gender){
+        if(!is_null($gender)){
             $query->where('gender', $gender);
         }
+        // if($key_words)
         // if($key_words && $gender){
         //     $query->where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
         //     ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
@@ -55,11 +59,11 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:users,username',
+            'username' => 'required|string|max:255|unique:students,username',
             'firstname' => 'string|max:255',
             'lastname' => 'string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255|unique:users,email',
+            'email' => 'required|email|string|max:255|unique:students,email',
             'gender' => 'string|max:255',
             'identification' => 'string|max:255',
             'address' => 'required|max:255',

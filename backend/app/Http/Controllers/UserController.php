@@ -23,17 +23,16 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $key_words = $request->search;
+        $searchType = $request->searchType;
         $records = $request->record;
-        if($key_words){
-            $student = User::where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
-            ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
-            ->orWhere('email', 'LIKE', '%'.$key_words.'%')->paginate(10);
-            return $student;
+        $query = User::query();
+        if($key_words && $searchType){
+            $query->where($searchType, 'LIKE', '%'.$key_words.'%');
         }
         if($records){
-            $users = User::paginate($records);
+            $users = $query->paginate($records);
         }else{
-            $users = User::paginate(10);
+            $users = $query->paginate(10);
         }
         return $users;
     }
@@ -47,14 +46,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:students,username',
+            'username' => 'required|string|max:255|unique:users,username',
             'firstname' => 'string|max:255',
             'lastname' => 'string|max:255',
             'gender' => 'string|max:255',
             'active' => 'string|max:255',
             'role' => 'string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255|unique:students,email',
+            'email' => 'required|email|string|max:255|unique:users,email',
             'password' => 'required|max:255'
         ]);
         if($validator->fails()){

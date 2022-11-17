@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 function Register() {
     const [username, setUsername] = useState('');
@@ -8,6 +8,9 @@ function Register() {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const errRef = useRef();
+    const [errMsg, setErrMsg] = useState('');
+    const navigate = useNavigate();
     const data = {
         username: username,
         firstname: firstname,
@@ -17,15 +20,25 @@ function Register() {
         password: password,
     };
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        setErrMsg('');
+    }, [email, username]);
 
-    function Submit(e) {
+    const Submit = async (e) => {
         e.preventDefault();
-        axios
-            .post('http://127.0.0.1:8000/api/auth/register', data)
-            .then(alert('Register successfully'), navigate('/login'))
-            .catch((error) => console.log(error));
-    }
+        try {
+            await axios.post('http://127.0.0.1:8000/api/auth/register', data);
+            alert('Register successfully');
+            navigate('/login');
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg('No Server Response');
+            } else {
+                setErrMsg('Register Failed');
+            }
+            errRef.current.focus();
+        }
+    };
 
     return (
         <div className="container-xxl">
@@ -48,8 +61,16 @@ function Register() {
                                 method="POST"
                                 onSubmit={Submit}
                             >
+                                <p
+                                    ref={errRef}
+                                    className={errMsg ? 'errmsg alert alert-danger' : 'offscreen'}
+                                    role="alert"
+                                    aria-live="assertive"
+                                >
+                                    {errMsg}
+                                </p>
                                 <div className="mb-3">
-                                    <label for="username" className="form-label">
+                                    <label htmlFor="username" className="form-label">
                                         Username
                                     </label>
                                     <input
@@ -60,12 +81,12 @@ function Register() {
                                         id="username"
                                         name="username"
                                         placeholder="Enter your username"
-                                        autofocus
+                                        autoFocus
                                         required
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label for="firstname" className="form-label">
+                                    <label htmlFor="firstname" className="form-label">
                                         Firstname
                                     </label>
                                     <input
@@ -76,12 +97,12 @@ function Register() {
                                         id="firstname"
                                         name="firstname"
                                         placeholder="Enter your firstname"
-                                        autofocus
+                                        autoFocus
                                         required
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label for="lastname" className="form-label">
+                                    <label htmlFor="lastname" className="form-label">
                                         Lastname
                                     </label>
                                     <input
@@ -92,12 +113,12 @@ function Register() {
                                         id="lastname"
                                         name="lastname"
                                         placeholder="Enter your lastname"
-                                        autofocus
+                                        autoFocus
                                         required
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label for="email" className="form-label">
+                                    <label htmlFor="email" className="form-label">
                                         Email
                                     </label>
                                     <input
@@ -112,7 +133,7 @@ function Register() {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label for="phone" className="form-label">
+                                    <label htmlFor="phone" className="form-label">
                                         Phone
                                     </label>
                                     <input
@@ -127,7 +148,7 @@ function Register() {
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">
-                                    <label className="form-label" for="password">
+                                    <label className="form-label" htmlFor="password">
                                         Password
                                     </label>
                                     <div className="input-group input-group-merge">
@@ -156,7 +177,7 @@ function Register() {
                                             id="terms-conditions"
                                             name="terms"
                                         />
-                                        <label className="form-check-label" for="terms-conditions">
+                                        <label className="form-check-label" htmlFor="terms-conditions">
                                             I agree to
                                             <a href="javascript:void(0);">privacy policy & terms</a>
                                         </label>
