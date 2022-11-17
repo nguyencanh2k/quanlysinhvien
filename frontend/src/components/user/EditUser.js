@@ -8,7 +8,7 @@ function EditUser() {
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('0');
     const [active, setActive] = useState('');
-    const [role, setRole] = useState('');
+    // const [role, setRole] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +25,7 @@ function EditUser() {
                 setLastname(res.data.lastname);
                 setGender(res.data.gender);
                 setActive(res.data.active);
-                setRole(res.data.role);
+                // setRole(res.data.role);
                 setPhone(res.data.phone);
                 setEmail(res.data.email);
                 setPassword(res.data.password);
@@ -39,7 +39,7 @@ function EditUser() {
         lastname: lastname,
         gender: gender,
         active: active,
-        role: role,
+        // role: role,
         phone: phone,
         email: email,
         password: password,
@@ -155,7 +155,7 @@ function EditUser() {
                                         <option value="1">Active</option>
                                     </select>
                                 </div>
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                     <label htmlFor="exampleFormControlSelect1" className="form-label">
                                         Role
                                     </label>
@@ -172,7 +172,7 @@ function EditUser() {
                                         <option value="Admin">Admin</option>
                                         <option value="QLHT">QLHT</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
                                     <input

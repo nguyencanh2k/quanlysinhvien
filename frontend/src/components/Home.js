@@ -9,7 +9,7 @@ function Home() {
         await axios
             .get('http://127.0.0.1:8000/api/student')
             .then((res) => {
-                setStudents(res.data.data.reverse());
+                setStudents(res.data);
             })
             .catch((error) => console.log(error));
     };
@@ -17,7 +17,7 @@ function Home() {
         await axios
             .get('http://127.0.0.1:8000/api/user')
             .then((res) => {
-                setUsers(res.data.data.reverse());
+                setUsers(res.data);
             })
             .catch((error) => console.log(error));
     };
@@ -64,7 +64,7 @@ function Home() {
                                         </div>
                                     </div>
                                     <span className="fw-semibold d-block mb-1">Student</span>
-                                    <h3 className="card-title mb-2">{students.length}</h3>
+                                    <h3 className="card-title mb-2">{students.total}</h3>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@ function Home() {
                                         </div>
                                     </div>
                                     <span className="fw-semibold d-block mb-1">User</span>
-                                    <h3 className="card-title mb-2">{users.length}</h3>
+                                    <h3 className="card-title mb-2">{users.total}</h3>
                                 </div>
                             </div>
                         </div>

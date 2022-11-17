@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class isAdmin
+class XSSProtection
 {
     /**
      * Handle an incoming request.
@@ -17,9 +16,18 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() &&  Auth::user()->role != 'Admin') {
-            return response()->json(['error' => 'You have not Admin access'], 401);
+        if (!in_array(strtolower($request->method()), ['put', 'post'])) {
+            return $next($request);
         }
+
+        $input = $request->all();
+
+        array_walk_recursive($input, function(&$input) {
+            $input = strip_tags($input);
+        });
+
+        $request->merge($input);
+
         return $next($request);
     }
 }

@@ -8,7 +8,7 @@ function AddUser() {
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('0');
     const [active, setActive] = useState('');
-    const [role, setRole] = useState('');
+    // const [role, setRole] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ function AddUser() {
         lastname: lastname,
         gender: gender,
         active: active,
-        role: role,
+        // role: role,
         phone: phone,
         email: email,
         password: password,
@@ -140,7 +140,7 @@ function AddUser() {
                                         <option value="1">Active</option>
                                     </select>
                                 </div>
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                     <label htmlhtmlFor="exampleFormControlSelect1" className="form-label">
                                         Role
                                     </label>
@@ -158,7 +158,7 @@ function AddUser() {
                                         <option value="Admin">Admin</option>
                                         <option value="QLHT">QLHT</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
                                     <input

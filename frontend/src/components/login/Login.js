@@ -136,7 +136,12 @@ const Login = () => {
                             <p className="mb-4">Please sign-in to your account and start the adventure</p>
 
                             <form id="formAuthentication" className="mb-3" onSubmit={handleSubmit}>
-                                <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">
+                                <p
+                                    ref={errRef}
+                                    className={errMsg ? 'errmsg alert alert-danger' : 'offscreen'}
+                                    role="alert"
+                                    aria-live="assertive"
+                                >
                                     {errMsg}
                                 </p>
                                 <div className="mb-3">

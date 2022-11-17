@@ -8,14 +8,41 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(['role:Admin']);
+        // $this->middleware(['role:QLHT']);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::paginate(10);
+        $key_words = $request->search;
+        $gender = $request->searchGender;
+        $records = $request->record;
+        $query = Student::query();
+        if($key_words){
+            $query->where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
+            ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
+            ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%');
+        }
+        if($gender){
+            $query->where('gender', $gender);
+        }
+        // if($key_words && $gender){
+        //     $query->where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
+        //     ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
+        //     ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%')->where('gender', $gender);
+        // }
+        if($records){
+            $students = $query->paginate($records);
+        }else{
+            $students = $query->paginate(10);
+        }
         return $students;
     }
 
@@ -28,11 +55,11 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
             'firstname' => 'string|max:255',
             'lastname' => 'string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255',
+            'email' => 'required|email|string|max:255|unique:users,email',
             'gender' => 'string|max:255',
             'identification' => 'string|max:255',
             'address' => 'required|max:255',

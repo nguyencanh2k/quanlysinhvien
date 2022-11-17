@@ -6,11 +6,12 @@ function Header({ users }) {
         const data = localStorage.getItem('accessToken');
         axios
             .post('http://127.0.0.1:8000/api/auth/logout', {
-                body: {
-                    token: data,
+                headers: {
+                    Authorization: 'Bearer ' + data,
+                    'Content-Type': 'application/json',
                 },
             })
-            .then((res) => console.log(res.data))
+            .then((res) => console.log(res))
             .catch((error) => console.log(error));
         localStorage.removeItem('accessToken');
     }

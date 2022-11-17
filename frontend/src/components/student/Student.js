@@ -5,11 +5,19 @@ import Pagination from 'react-js-pagination';
 function Student() {
     const [students, setStudents] = useState([]);
     const [pages, setPages] = useState([]);
-    const [searchTitle, setSearchTitle] = useState('');
-
+    const [searchInput, setSearchInput] = useState('');
+    const [searchGender, setSearchGender] = useState('');
+    const [record, setRecord] = useState(null);
+    const data = {
+        search: searchInput,
+        searchGender: searchGender,
+        record: record,
+    };
     const loadStudents = async (pageNumber = 1) => {
         await axios
-            .get(`http://127.0.0.1:8000/api/student?page=${pageNumber}`)
+            .get(`http://127.0.0.1:8000/api/student?page=${pageNumber}`, {
+                params: data,
+            })
             .then((res) => {
                 setStudents(res.data.data);
                 setPages(res.data);
@@ -18,13 +26,16 @@ function Student() {
     };
     useEffect(() => {
         loadStudents();
-    }, []);
-
+    }, [record]);
     function deleteStudent(id) {
         axios
             .delete(`http://127.0.0.1:8000/api/student/${id}`)
             .then(loadStudents())
             .catch((error) => console.log(error));
+    }
+    function SearchSubmit(e) {
+        e.preventDefault();
+        loadStudents();
     }
     return (
         <div className="container-xxl flex-grow-1 container-p-y">
@@ -39,47 +50,60 @@ function Student() {
                         Add
                     </Link>
                 </div>
-                <div className="row m-2">
-                    <div class="input-group input-group-merge p-4 w-25">
-                        <span class="input-group-text" id="basic-addon-search31">
-                            <i class="bx bx-search"></i>
-                        </span>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Username..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31"
-                            onChange={(e) => setSearchTitle(e.target.value)}
-                        />
+                <form>
+                    <div className="row m-4">
+                        <div className="input-group input-group-merge p-4 w-25">
+                            <span className="input-group-text" id="basic-addon-search31">
+                                <i className="bx bx-search"></i>
+                            </span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Search..."
+                                aria-label="Search..."
+                                aria-describedby="basic-addon-search31"
+                                value={searchInput}
+                                name="search"
+                                onChange={(e) => setSearchInput(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-group input-group-merge p-4 w-25">
+                            <select
+                                className="form-control"
+                                id="gender"
+                                aria-label="Default select example"
+                                name="searchSelect"
+                                value={searchGender}
+                                onChange={(e) => setSearchGender(e.target.value)}
+                            >
+                                <option value="">Open this select menu</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                            </select>
+                        </div>
+                        <div className="p-4 w-25">
+                            <button type="submit" onClick={SearchSubmit} className="btn btn-primary btn-update">
+                                Send
+                            </button>
+                        </div>
+                        <div className="input-group input-group-merge p-4 w-25">
+                            <select
+                                className="form-control"
+                                id="record"
+                                aria-label="Default select example"
+                                name="searchSelect"
+                                value={record}
+                                onChange={(e) => setRecord(e.target.value)}
+                            >
+                                <option value="5">5</option>
+                                <option selected value="10">
+                                    10
+                                </option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="input-group input-group-merge p-4 w-25">
-                        <span class="input-group-text" id="basic-addon-search31">
-                            <i class="bx bx-search"></i>
-                        </span>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Phone..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31"
-                            // onChange={(e) => setSearchTitle(e.target.value)}
-                        />
-                    </div>
-                    <div class="input-group input-group-merge p-4 w-25">
-                        <span class="input-group-text" id="basic-addon-search31">
-                            <i class="bx bx-search"></i>
-                        </span>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Email..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31"
-                            // onChange={(e) => setSearchTitle(e.target.value)}
-                        />
-                    </div>
-                </div>
+                </form>
                 <div className="table-responsive text-nowrap">
                     <table className="table table-striped">
                         <thead>
@@ -96,40 +120,32 @@ function Student() {
                             </tr>
                         </thead>
                         <tbody className="table-border-bottom-0">
-                            {students
-                                .filter((value) => {
-                                    if (searchTitle === '') {
-                                        return value;
-                                    } else if (value.username.toLowerCase().includes(searchTitle.toLowerCase())) {
-                                        return value;
-                                    }
-                                })
-                                .map((student, index) => (
-                                    <tr key={index}>
-                                        <td>{student.id}</td>
-                                        <td>{student.username}</td>
-                                        <td>{student.phone}</td>
-                                        <td>{student.email}</td>
-                                        <td>{student.address}</td>
-                                        <td>{student.gender == 0 ? 'Male' : 'Female'}</td>
-                                        <td>{student.school_id}</td>
-                                        <td>{student.identification}</td>
-                                        <td>
-                                            <Link to={`/view-student/${student.id}`} className="btn btn-primary btn-sm">
-                                                View
-                                            </Link>
-                                            <Link to={`/edit-student/${student.id}`} className="btn btn-success btn-sm">
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => deleteStudent(student.id)}
-                                                className="btn btn-danger btn-sm"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                            {students.map((student, index) => (
+                                <tr key={index}>
+                                    <td>{student.id}</td>
+                                    <td>{student.username}</td>
+                                    <td>{student.phone}</td>
+                                    <td>{student.email}</td>
+                                    <td>{student.address}</td>
+                                    <td>{student.gender == 0 ? 'Male' : 'Female'}</td>
+                                    <td>{student.school_id}</td>
+                                    <td>{student.identification}</td>
+                                    <td>
+                                        <Link to={`/view-student/${student.id}`} className="btn btn-primary btn-sm">
+                                            View
+                                        </Link>
+                                        <Link to={`/edit-student/${student.id}`} className="btn btn-success btn-sm">
+                                            Edit
+                                        </Link>
+                                        <button
+                                            onClick={() => deleteStudent(student.id)}
+                                            className="btn btn-danger btn-sm"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                     <div className="d-flex justify-content-center">

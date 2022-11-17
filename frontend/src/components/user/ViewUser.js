@@ -109,7 +109,7 @@ function ViewUser() {
                                         <option value="1">Active</option>
                                     </select>
                                 </div>
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                     <label htmlFor="exampleFormControlSelect1" className="form-label">
                                         Role
                                     </label>
@@ -126,7 +126,7 @@ function ViewUser() {
                                         <option value="Admin">Admin</option>
                                         <option value="QLHT">QLHT</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
                                     <input

@@ -8,14 +8,33 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(['role:Admin']);
+        // $this->middleware(['role:QLHT']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $key_words = $request->search;
+        $records = $request->record;
+        if($key_words){
+            $student = User::where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
+            ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
+            ->orWhere('email', 'LIKE', '%'.$key_words.'%')->paginate(10);
+            return $student;
+        }
+        if($records){
+            $users = User::paginate($records);
+        }else{
+            $users = User::paginate(10);
+        }
         return $users;
     }
 
@@ -28,14 +47,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:students,username',
             'firstname' => 'string|max:255',
             'lastname' => 'string|max:255',
             'gender' => 'string|max:255',
             'active' => 'string|max:255',
             'role' => 'string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|string|max:255',
+            'email' => 'required|email|string|max:255|unique:students,email',
             'password' => 'required|max:255'
         ]);
         if($validator->fails()){

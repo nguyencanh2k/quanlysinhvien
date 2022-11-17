@@ -42,22 +42,21 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 
 });
-Route::middleware(['isAdminOrQLHT'])->group(function () {
-    Route::get('/student', [StudentController::class, 'index']);
-    Route::get('student/{id}', [StudentController::class, 'show']);
-    Route::post('student', [StudentController::class, 'store']);
-    Route::put('student/{id}', [StudentController::class, 'update']);
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('user/{id}', [UserController::class, 'show']);
+
+Route::middleware(['auth', 'XSSProtection', 'role:Admin'])->group(function () {
+    // Route::middleware(['auth', 'XSSProtection', 'role:QLHT'])->group(function () {
+        Route::get('/student', [StudentController::class, 'index']);
+        Route::get('student/{id}', [StudentController::class, 'show']);
+        Route::post('student', [StudentController::class, 'store']);
+        Route::put('student/{id}', [StudentController::class, 'update']);
+        Route::delete('student/{id}', [StudentController::class, 'destroy']);
+
+        Route::get('/user', [UserController::class, 'index']);
+        Route::get('user/{id}', [UserController::class, 'show']);
+        Route::post('user', [UserController::class, 'store']);
+        Route::put('user/{id}', [UserController::class, 'update']);
+        Route::delete('user/{id}', [UserController::class, 'destroy']);
+    // });
 });
 
-Route::middleware(['isAdmin'])->group(function () {
-    Route::delete('user/{id}', [UserController::class, 'destroy']);
-    Route::delete('student/{id}', [StudentController::class, 'destroy']);
-});
-
-Route::middleware(['isQLHT'])->group(function () {
-    Route::post('user', [UserController::class, 'store']);
-    Route::put('user/{id}', [UserController::class, 'update']);
-});
 
