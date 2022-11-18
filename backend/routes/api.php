@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => ['XSSProtection','api'],
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -43,7 +43,7 @@ Route::group([
 
 });
 
-Route::middleware(['auth', 'XSSProtection', 'role:Admin|QLHT'])->group(function () {
+Route::middleware(['XSSProtection', 'role:Admin|QLHT'])->group(function () {
     Route::get('/student', [StudentController::class, 'index']);
     Route::get('student/{id}', [StudentController::class, 'show']);
     Route::post('student', [StudentController::class, 'store'])->middleware('permission:add student');
@@ -53,7 +53,7 @@ Route::middleware(['auth', 'XSSProtection', 'role:Admin|QLHT'])->group(function 
     Route::get('/user', [UserController::class, 'index']);
     Route::get('user/{id}', [UserController::class, 'show']);
     Route::post('user', [UserController::class, 'store'])->middleware(['permission:add user', 'isAdmin']);
-    Route::put('user/{id}', [UserController::class, 'update'])->middleware('permission:edit user');
+    Route::put('user/{id}', [UserController::class, 'update'])->middleware('permission:edit user', 'isAdmin');
     Route::delete('user/{id}', [UserController::class, 'destroy'])->middleware('permission:delete user');
 });
 

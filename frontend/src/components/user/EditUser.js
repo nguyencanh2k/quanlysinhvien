@@ -8,10 +8,10 @@ function EditUser() {
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('0');
     const [active, setActive] = useState('');
-    // const [role, setRole] = useState('');
+    const [role, setRole] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
@@ -25,10 +25,10 @@ function EditUser() {
                 setLastname(res.data.lastname);
                 setGender(res.data.gender);
                 setActive(res.data.active);
-                // setRole(res.data.role);
+                setRole(res.data.roles[0].name);
                 setPhone(res.data.phone);
                 setEmail(res.data.email);
-                setPassword(res.data.password);
+                // setPassword(res.data.password);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -39,12 +39,11 @@ function EditUser() {
         lastname: lastname,
         gender: gender,
         active: active,
-        // role: role,
+        role: role,
         phone: phone,
         email: email,
-        password: password,
+        // password: password,
     };
-
     function UpdateUser(e) {
         e.preventDefault();
         axios
@@ -155,7 +154,7 @@ function EditUser() {
                                         <option value="1">Active</option>
                                     </select>
                                 </div>
-                                {/* <div className="mb-3">
+                                <div className="mb-3">
                                     <label htmlFor="exampleFormControlSelect1" className="form-label">
                                         Role
                                     </label>
@@ -172,7 +171,7 @@ function EditUser() {
                                         <option value="Admin">Admin</option>
                                         <option value="QLHT">QLHT</option>
                                     </select>
-                                </div> */}
+                                </div>
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
                                     <input
@@ -203,17 +202,17 @@ function EditUser() {
                                     </div>
                                     <div className="form-text">You can use letters, numbers & periods</div>
                                 </div>
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                     <label className="form-label">Password</label>
                                     <input
-                                        value={password || ''}
+                                        value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         type="text"
                                         className="form-control"
                                         id="password"
                                         placeholder=""
                                     />
-                                </div>
+                                </div> */}
                                 <button onClick={UpdateUser} type="submit" className="btn btn-primary btn-update">
                                     Send
                                 </button>

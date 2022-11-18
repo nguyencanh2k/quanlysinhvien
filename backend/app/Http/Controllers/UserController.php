@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         // $this->middleware(['role:QLHT']);
     }
     
@@ -61,9 +61,10 @@ class UserController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
+        $user_by = Auth::user()->username;
         $user = User::create(array_merge($validator->validated(), 
             ['password' => bcrypt($request->password),
-            'created_by' => 'admin', 'updated_by' => 'admin']));
+            'created_by' => $user_by, 'updated_by' => $user_by]));
         $user_role = User::find($user->id);
         $user_role->assignRole($request->role);
         return response()->json([
@@ -82,6 +83,7 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
+            $user_role = $user->getRoleNames();
         }catch(ModelNotFoundException $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -97,8 +99,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->except('username', 'role'), [
+            'firstname' => 'string|max:255',
+            'lastname' => 'string|max:255',
+            'gender' => 'string|max:255',
+            'active' => 'string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|string|max:255',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
         $user = User::findOrFail($id);
-        $user->update(array_merge($request->except('username'), ['password' => bcrypt($request->password), 'updated_by' => 'admin']));
+        $user_by = Auth::user()->username;
+        $user->update(array_merge($validator->validated(), ['updated_by' => $user_by]));
+        $user->syncRoles($request->role);
         return $user;
     }
 
@@ -112,7 +127,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        $user->update(['deleted_by' => 'admin']);
+        $user_by = Auth::user()->username;
+        $user->update(['deleted_by' => $user_by]);
         return $user;
     }
 }

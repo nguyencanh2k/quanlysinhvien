@@ -6,11 +6,11 @@ function Student() {
     const [students, setStudents] = useState([]);
     const [pages, setPages] = useState([]);
     const [searchInput, setSearchInput] = useState('');
-    const [searchGender, setSearchGender] = useState('');
+    const [searchType, setSearchType] = useState('');
     const [record, setRecord] = useState(null);
     const data = {
         search: searchInput,
-        searchGender: searchGender,
+        searchType: searchType,
         record: record,
     };
     const loadStudents = async (pageNumber = 1) => {
@@ -73,12 +73,13 @@ function Student() {
                                 id="gender"
                                 aria-label="Default select example"
                                 name="searchSelect"
-                                value={searchGender}
-                                onChange={(e) => setSearchGender(e.target.value)}
+                                value={searchType}
+                                onChange={(e) => setSearchType(e.target.value)}
                             >
                                 <option value="">Open this select menu</option>
-                                <option value="0">Male</option>
-                                <option value="1">Female</option>
+                                <option value="username">Username</option>
+                                <option value="phone">Phone</option>
+                                <option value="email">Email</option>
                             </select>
                         </div>
                         <div className="p-4 w-25">

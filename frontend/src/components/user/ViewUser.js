@@ -4,11 +4,13 @@ import axios from 'axios';
 function ViewUser() {
     const { id } = useParams();
     const [user, setUser] = useState([]);
+    const [role, setRole] = useState('');
     useEffect(() => {
         axios
             .get(`http://127.0.0.1:8000/api/user/${id}`)
             .then((res) => {
                 setUser(res.data);
+                setRole(res.data.roles[0].name);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -109,12 +111,12 @@ function ViewUser() {
                                         <option value="1">Active</option>
                                     </select>
                                 </div>
-                                {/* <div className="mb-3">
+                                <div className="mb-3">
                                     <label htmlFor="exampleFormControlSelect1" className="form-label">
                                         Role
                                     </label>
                                     <select
-                                        value={user.role}
+                                        value={role}
                                         className="form-control"
                                         id="role"
                                         aria-label="Default select example"
@@ -126,7 +128,7 @@ function ViewUser() {
                                         <option value="Admin">Admin</option>
                                         <option value="QLHT">QLHT</option>
                                     </select>
-                                </div> */}
+                                </div>
                                 <div className="mb-3">
                                     <label className="form-label">Phone</label>
                                     <input

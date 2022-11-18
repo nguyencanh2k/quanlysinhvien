@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
 class isAdmin
 {
     /**
@@ -19,6 +19,13 @@ class isAdmin
     {
         if (Auth::check() &&  Auth::user()->hasRole('QLHT') && $request->role == 'Admin') {
             return response()->json(['error' => 'You have not Admin access'], 401);
+        }
+        $user_id = $request->id;
+        if($user_id){
+            $user = User::find($user_id);
+            if (Auth::check() &&  Auth::user()->hasRole('QLHT') && $user->hasRole('Admin')) {
+                return response()->json(['error' => 'You have not Admin access'], 401);
+            }
         }
         return $next($request);
     }

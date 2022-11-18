@@ -16,9 +16,9 @@ class XSSProtection
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!in_array(strtolower($request->method()), ['put', 'post'])) {
-            return $next($request);
-        }
+        // if (!in_array(strtolower($request->method()), ['put', 'post'])) {
+        //     return $next($request);
+        // }
 
         $input = $request->all();
 

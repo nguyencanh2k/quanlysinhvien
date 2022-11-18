@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Constraint\IsNull;
+
 class StudentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
         // $this->middleware(['role:QLHT']);
     }
     /**
@@ -22,26 +25,12 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $key_words = $request->search;
-        $gender = $request->searchGender;
+        $searchType = $request->searchType;
         $records = $request->record;
         $query = Student::query();
-        if($key_words ){
-            $query->where(function($query) use ($key_words) {
-                $query->orWhere('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
-                ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
-                ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%');
-            });
-            
+        if($key_words && $searchType){
+            $query->where($searchType, 'LIKE', '%'.$key_words.'%');
         }
-        if(!is_null($gender)){
-            $query->where('gender', $gender);
-        }
-        // if($key_words)
-        // if($key_words && $gender){
-        //     $query->where('username', 'LIKE', '%'.$key_words.'%')->orWhere('firstname', 'LIKE', '%'.$key_words.'%')
-        //     ->orWhere('lastname', 'LIKE', '%'.$key_words.'%')->orWhere('phone', 'LIKE', '%'.$key_words.'%')
-        //     ->orWhere('email', 'LIKE', '%'.$key_words.'%')->orWhere('identification', 'LIKE', '%'.$key_words.'%')->where('gender', $gender);
-        // }
         if($records){
             $students = $query->paginate($records);
         }else{
@@ -72,7 +61,8 @@ class StudentController extends Controller
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $student = Student::create(array_merge($validator->validated(), ['created_by' => 'admin', 'updated_by' => 'admin']));
+        $user_by = Auth::user()->username;
+        $student = Student::create(array_merge($validator->validated(), ['created_by' => $user_by, 'updated_by' => $user_by]));
         return response()->json([
             'message' => 'Student successfully created',
             'student' => $student
@@ -104,8 +94,22 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->except('username'), [
+            'firstname' => 'string|max:255',
+            'lastname' => 'string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email|string|max:255',
+            'gender' => 'string|max:255',
+            'identification' => 'string|max:255',
+            'address' => 'required|max:255',
+            'school_id' => 'required|max:255',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
         $student = Student::findOrFail($id);
-        $student->update(array_merge($request->except('username'), ['updated_by' => 'admin']));
+        $user_by = Auth::user()->username;
+        $student->update(array_merge($validator->validated(), ['updated_by' => $user_by]));
         return $student;
     }
 
@@ -119,7 +123,8 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         $student->delete();
-        $student->update(['deleted_by' => 'admin']);
+        $user_by = Auth::user()->username;
+        $student->update(['deleted_by' => $user_by]);
         return $student;
     }
 }
