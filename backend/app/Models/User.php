@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes; // add soft delete
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -65,5 +66,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_by = Auth()->user()->id;
+            $model->updated_by = NULL;
+            $model->deleted_by = NULL;
+        });
+
+        static::updating(function ($model) {
+            $model->updated_by = Auth()->user()->id;
+            $model->deleted_by = NULL;
+        });
+
+        // static::deleting(function ($model) {
+        //     $model->deleted_by = Auth()->user()->id;
+        //     $model->save();
+        // });
     }
 }

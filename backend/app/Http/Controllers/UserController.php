@@ -63,8 +63,7 @@ class UserController extends Controller
         }
         $user_by = Auth::user()->username;
         $user = User::create(array_merge($validator->validated(), 
-            ['password' => bcrypt($request->password),
-            'created_by' => $user_by, 'updated_by' => $user_by]));
+            ['password' => bcrypt($request->password)]));
         $user_role = User::find($user->id);
         $user_role->assignRole($request->role);
         return response()->json([
@@ -112,7 +111,7 @@ class UserController extends Controller
         }
         $user = User::findOrFail($id);
         $user_by = Auth::user()->username;
-        $user->update(array_merge($validator->validated(), ['updated_by' => $user_by]));
+        $user->update($validator->validated());
         $user->syncRoles($request->role);
         return $user;
     }
@@ -127,8 +126,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        $user_by = Auth::user()->username;
-        $user->update(['deleted_by' => $user_by]);
         return $user;
     }
 }

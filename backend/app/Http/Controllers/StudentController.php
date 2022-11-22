@@ -62,7 +62,7 @@ class StudentController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $user_by = Auth::user()->username;
-        $student = Student::create(array_merge($validator->validated(), ['created_by' => $user_by, 'updated_by' => $user_by]));
+        $student = Student::create($validator->validated());
         return response()->json([
             'message' => 'Student successfully created',
             'student' => $student
@@ -109,7 +109,7 @@ class StudentController extends Controller
         }
         $student = Student::findOrFail($id);
         $user_by = Auth::user()->username;
-        $student->update(array_merge($validator->validated(), ['updated_by' => $user_by]));
+        $student->update($validator->validated());
         return $student;
     }
 
@@ -123,8 +123,6 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         $student->delete();
-        $user_by = Auth::user()->username;
-        $student->update(['deleted_by' => $user_by]);
         return $student;
     }
 }
