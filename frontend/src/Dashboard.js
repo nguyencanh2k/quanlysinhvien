@@ -16,24 +16,26 @@ import { useEffect, useState } from 'react';
 
 function Dashboard() {
     const data = localStorage.getItem('accessToken');
-    const [users, setUsers] = useState([]);
-    const loadUsers = () => {
-        axios
-            .post('http://127.0.0.1:8000/api/auth/me', {
-                headers: {
-                    Authorization: `Bearer ${data}`,
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then((res) => {
-                setUsers(res.data);
-            })
-            .catch((error) => console.log(error));
-    };
-    useEffect(() => {
-        loadUsers();
-    }, []);
+    // const [users, setUsers] = useState([]);
+    const users = JSON.parse(atob(data.split('.')[1]));
+    // const loadUsers = () => {
+    //     axios
+    //         .post('http://127.0.0.1:8000/api/auth/me', {
+    //             headers: {
+    //                 Authorization: `Bearer ${data}`,
+    //                 Accept: 'application/json',
+    //                 'Content-Type': 'application/json',
+    //             },
+    //         })
+    //         .then((res) => {
+    //             setUsers(res.data);
+    //         })
+    //         .catch((error) => console.log(error));
+    // };
+    // useEffect(() => {
+    //     loadUsers();
+    // }, []);
+
     return (
         <div className="layout-wrapper layout-content-navbar">
             <div className="layout-container">
@@ -43,11 +45,11 @@ function Dashboard() {
                     <div className="content-wrapper">
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/list-student" element={<Student />} />
+                            <Route path="/list-student" element={<Student userRole={users} />} />
                             <Route path="/add-student" element={<AddStudent />} />
                             <Route path="/edit-student/:id" element={<EditStudent />} />
                             <Route path="/view-student/:id" element={<ViewStudent />} />
-                            <Route path="/list-user" element={<User />} />
+                            <Route path="/list-user" element={<User userRole={users} />} />
                             <Route path="/add-user" element={<AddUser />} />
                             <Route path="/edit-user/:id" element={<EditUser />} />
                             <Route path="/view-user/:id" element={<ViewUser />} />

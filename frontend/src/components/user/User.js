@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 
-function User() {
+function User({ userRole }) {
     const [users, setUsers] = useState([]);
     const [pages, setPages] = useState([]);
     const [searchInput, setSearchInput] = useState('');
@@ -116,7 +116,7 @@ function User() {
                                 <th>Email</th>
                                 <th>Gender</th>
                                 <th>Active</th>
-                                {/* <th>Role</th> */}
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -130,7 +130,7 @@ function User() {
                                         <td>{user.email}</td>
                                         <td>{user.gender == 0 ? 'Male' : 'Female'}</td>
                                         <td>{user.active == 0 ? 'No' : 'Yes'}</td>
-                                        {/* <td>{user.role}</td> */}
+                                        <td>{user.roles[0].name}</td>
                                         <td>
                                             <Link to={`/view-user/${user.id}`} className="btn btn-primary btn-sm">
                                                 View
@@ -141,6 +141,7 @@ function User() {
                                             <button
                                                 onClick={() => deleteUser(user.id)}
                                                 className="btn btn-danger btn-sm"
+                                                disabled={userRole.role[0] == 'QLHT' ? true : false}
                                             >
                                                 Delete
                                             </button>

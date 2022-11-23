@@ -42,5 +42,20 @@ class CheckRoles
             }
         }
         return $next($request);
+
+
+        // $route = Route::getRoutes()->match($request);
+        // $currentroute = $route->getName();
+        // $user = auth()->user();
+        // if($user->hasRole('QLHT')){
+        //     $permissions = $user->getAllPermissions();
+        //     foreach($permissions as $value){
+        //         if($currentroute == 'user.'.$value->name || $currentroute == 'student.'.$value->name)
+        //         {  
+        //             return response()->json(['error' => 'You have not Admin access.'], 401); 
+        //         }
+        //     }
+        // }
+        // return $next($request);
     }
 }

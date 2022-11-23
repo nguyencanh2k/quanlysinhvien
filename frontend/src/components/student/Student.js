@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-function Student() {
+function Student({ userRole }) {
     const [students, setStudents] = useState([]);
     const [pages, setPages] = useState([]);
     const [searchInput, setSearchInput] = useState('');
@@ -42,7 +42,6 @@ function Student() {
             <h4 className="fw-bold py-3 mb-4">
                 <span className="text-muted fw-light">Home /</span> Student
             </h4>
-
             <div className="card">
                 <div className="card-header d-flex justify-content-between align-items-center">
                     <h5 className="mb-0">Student</h5>
@@ -141,6 +140,7 @@ function Student() {
                                         <button
                                             onClick={() => deleteStudent(student.id)}
                                             className="btn btn-danger btn-sm"
+                                            disabled={userRole.role[0] == 'QLHT' ? true : false}
                                         >
                                             Delete
                                         </button>

@@ -28,7 +28,7 @@ class UserController extends Controller
         $key_words = $request->search;
         $searchType = $request->searchType;
         $records = $request->record;
-        $query = User::query();
+        $query = User::with('roles');
         if($key_words && $searchType){
             $query->where($searchType, 'LIKE', '%'.$key_words.'%');
         }
