@@ -8,7 +8,7 @@ function ViewStudent() {
         axios
             .get(`http://127.0.0.1:8000/api/student/${id}`)
             .then((res) => {
-                setStudent(res.data);
+                setStudent(res.data.student);
             })
             .catch((error) => console.log(error));
     }, []);

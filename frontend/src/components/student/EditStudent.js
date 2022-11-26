@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditStudent() {
     const [username, setUsername] = useState('');
@@ -20,15 +22,15 @@ function EditStudent() {
         axios
             .get(`http://127.0.0.1:8000/api/student/${id}`)
             .then((res) => {
-                setUsername(res.data.username);
-                setFirstname(res.data.firstname);
-                setLastname(res.data.lastname);
-                setGender(res.data.gender);
-                setAddress(res.data.address);
-                setPhone(res.data.phone);
-                setEmail(res.data.email);
-                setIdentification(res.data.identification);
-                setSchoolID(res.data.school_id);
+                setUsername(res.data.student.username);
+                setFirstname(res.data.student.firstname);
+                setLastname(res.data.student.lastname);
+                setGender(res.data.student.gender);
+                setAddress(res.data.student.address);
+                setPhone(res.data.student.phone);
+                setEmail(res.data.student.email);
+                setIdentification(res.data.student.identification);
+                setSchoolID(res.data.student.school_id);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -50,9 +52,17 @@ function EditStudent() {
         axios
             .put(`http://127.0.0.1:8000/api/student/${id}`, data)
             .then((res) => {
-                navigate(`/view-student/${res.data.id}`);
+                toast.success('Edit success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                navigate(`/view-student/${res.data.student.id}`);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                toast.error('Edit error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
 
     return (

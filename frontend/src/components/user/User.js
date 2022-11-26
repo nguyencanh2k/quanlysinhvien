@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function User({ userRole }) {
     const [users, setUsers] = useState([]);
@@ -14,14 +16,14 @@ function User({ userRole }) {
         searchType: searchType,
         record: record,
     };
-    const loadUsers = (pageNumber = 1) => {
+    const loadUsers = (pageNumber) => {
         axios
             .get(`http://127.0.0.1:8000/api/user?page=${pageNumber}`, {
                 params: data,
             })
             .then((res) => {
-                setUsers(res.data.data);
-                setPages(res.data);
+                setUsers(res.data.users.data);
+                setPages(res.data.users);
             })
             .catch((error) => console.log(error));
     };
@@ -29,15 +31,41 @@ function User({ userRole }) {
         loadUsers();
     }, [record]);
 
-    function deleteUser(id) {
+    function deleteUser(id, pageNumber) {
         axios
             .delete(`http://127.0.0.1:8000/api/user/${id}`)
-            .then(loadUsers())
-            .catch((error) => console.log(error));
+            .then(() => {
+                toast.success('Delete success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                loadUsers(pageNumber);
+            })
+            .catch((error) => {
+                toast.error('Delete error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
     function SearchSubmit(e) {
         e.preventDefault();
         loadUsers();
+    }
+    function ActiveSubmit(userid, active, pageNumber) {
+        axios
+            .put(`http://127.0.0.1:8000/api/user/active/${userid}`, { active: active })
+            .then((res) => {
+                toast.success('Update active success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                loadUsers(pageNumber);
+            })
+            .catch((error) => {
+                toast.error('Update active error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
     return (
         <div className="container-xxl flex-grow-1 container-p-y">
@@ -129,19 +157,50 @@ function User({ userRole }) {
                                         <td>{user.phone}</td>
                                         <td>{user.email}</td>
                                         <td>{user.gender == 0 ? 'Male' : 'Female'}</td>
-                                        <td>{user.active == 0 ? 'No' : 'Yes'}</td>
-                                        <td>{user.roles[0].name}</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={user.active == 0 ? 1 : 0}
+                                                    checked={user.active == 0 ? false : true}
+                                                    onClick={(e) =>
+                                                        ActiveSubmit(user.id, e.target.value, pages.current_page)
+                                                    }
+                                                    disabled={
+                                                        userRole.role[0] == 'QLHT' || userRole.id == user.id
+                                                            ? true
+                                                            : false
+                                                    }
+                                                />
+                                            </div>
+                                        </td>
+                                        <td>{user.roles[0]?.name}</td>
                                         <td>
                                             <Link to={`/view-user/${user.id}`} className="btn btn-primary btn-sm">
                                                 View
                                             </Link>
-                                            <Link to={`/edit-user/${user.id}`} className="btn btn-success btn-sm">
+                                            <Link
+                                                to={`/edit-user/${user.id}`}
+                                                className={
+                                                    (userRole.role[0] == 'QLHT' && user.roles[0]?.name == 'Admin') ||
+                                                    userRole.id == user.id
+                                                        ? 'btn btn-success btn-sm disabled'
+                                                        : 'btn btn-success btn-sm'
+                                                }
+                                            >
                                                 Edit
                                             </Link>
                                             <button
-                                                onClick={() => deleteUser(user.id)}
+                                                onClick={() => {
+                                                    if (window.confirm('Delete user?')) {
+                                                        deleteUser(user.id, pages.current_page);
+                                                    }
+                                                }}
                                                 className="btn btn-danger btn-sm"
-                                                disabled={userRole.role[0] == 'QLHT' ? true : false}
+                                                disabled={
+                                                    userRole.role[0] == 'QLHT' || userRole.id == user.id ? true : false
+                                                }
                                             >
                                                 Delete
                                             </button>

@@ -36,7 +36,9 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+        if (auth()->user()->active == '0') {
+            return response()->json(['error' => 'User not active'], 402);
+        }
         return $this->respondWithToken($token);
     }
 

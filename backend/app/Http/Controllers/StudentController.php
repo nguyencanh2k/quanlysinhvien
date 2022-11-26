@@ -36,7 +36,10 @@ class StudentController extends Controller
         }else{
             $students = $query->paginate(10);
         }
-        return $students;
+        return response()->json([
+            'message' => 'successfully',
+            'students' => $students
+        ], 201);
     }
 
     /**
@@ -82,7 +85,10 @@ class StudentController extends Controller
         }catch(ModelNotFoundException $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        return $student;
+        return response()->json([
+            'message' => 'successfully',
+            'student' => $student
+        ], 201);
     }
 
     /**
@@ -110,7 +116,10 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $user_by = Auth::user()->username;
         $student->update($validator->validated());
-        return $student;
+        return response()->json([
+            'message' => 'successfully',
+            'student' => $student
+        ], 201);
     }
 
     /**
@@ -123,6 +132,9 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         $student->delete();
-        return $student;
+        return response()->json([
+            'message' => 'successfully',
+            'student' => $student
+        ], 201);
     }
 }

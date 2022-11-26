@@ -11,11 +11,14 @@ use Illuminate\Database\Eloquent\SoftDeletes; // add soft delete
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;// add soft delete
     use HasRoles;
+    use LogsActivity;
     /**
      * The attributes that are mass assignable.
      *
@@ -26,7 +29,31 @@ class User extends Authenticatable implements JWTSubject
         'phone', 'email', 'password', 'role',
         'deleted_at', 'deleted_by', 'created_at', 'created_by', 'updated_at', 'updated_by'
     ];
-
+    protected static $logAttributes = [
+        'username', 'firstname', 'lastname', 'gender', 'active', 
+        'phone', 'email', 'password', 'role',
+    ];
+    protected static $ignoreChangedAttributes = [
+        'deleted_at', 'deleted_by', 'created_at', 'created_by', 'updated_at', 'updated_by'
+    ];
+    protected static $recordEvents = [
+        'created', 'updated', 'deleted'
+    ];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'user';
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->useLogName('admin')
+        ->logOnly([
+            'username', 'firstname', 'lastname', 'gender', 'active', 
+            'phone', 'email', 'password', 'role',
+            'deleted_at', 'deleted_by', 'created_at', 'created_by', 'updated_at', 'updated_by'
+        ]);
+    }
+    public function getDescriptionForEvent(string $eventName): string{
+        return "You have {$eventName} user";
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

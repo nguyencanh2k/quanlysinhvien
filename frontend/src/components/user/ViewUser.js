@@ -9,8 +9,8 @@ function ViewUser() {
         axios
             .get(`http://127.0.0.1:8000/api/user/${id}`)
             .then((res) => {
-                setUser(res.data);
-                setRole(res.data.roles[0].name);
+                setUser(res.data.user);
+                setRole(res.data.user.roles[0].name);
             })
             .catch((error) => console.log(error));
     }, []);

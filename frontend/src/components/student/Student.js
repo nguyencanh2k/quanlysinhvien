@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Student({ userRole }) {
     const [students, setStudents] = useState([]);
     const [pages, setPages] = useState([]);
@@ -13,14 +15,14 @@ function Student({ userRole }) {
         searchType: searchType,
         record: record,
     };
-    const loadStudents = async (pageNumber = 1) => {
+    const loadStudents = async (pageNumber) => {
         await axios
             .get(`http://127.0.0.1:8000/api/student?page=${pageNumber}`, {
                 params: data,
             })
             .then((res) => {
-                setStudents(res.data.data);
-                setPages(res.data);
+                setStudents(res.data.students.data);
+                setPages(res.data.students);
             })
             .catch((error) => console.log(error));
     };
@@ -30,8 +32,18 @@ function Student({ userRole }) {
     function deleteStudent(id) {
         axios
             .delete(`http://127.0.0.1:8000/api/student/${id}`)
-            .then(loadStudents())
-            .catch((error) => console.log(error));
+            .then(() => {
+                toast.success('Delete success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                loadStudents();
+            })
+            .catch((error) => {
+                toast.error('Delete error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
     function SearchSubmit(e) {
         e.preventDefault();
@@ -138,7 +150,11 @@ function Student({ userRole }) {
                                             Edit
                                         </Link>
                                         <button
-                                            onClick={() => deleteStudent(student.id)}
+                                            onClick={() => {
+                                                if (window.confirm('Delete student?')) {
+                                                    deleteStudent(student.id);
+                                                }
+                                            }}
                                             className="btn btn-danger btn-sm"
                                             disabled={userRole.role[0] == 'QLHT' ? true : false}
                                         >

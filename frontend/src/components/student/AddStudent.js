@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AddStudent() {
     const [username, setUsername] = useState('');
@@ -31,9 +33,17 @@ function AddStudent() {
         axios
             .post('http://127.0.0.1:8000/api/student', data)
             .then((res) => {
+                toast.success('Add success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
                 navigate(`/view-student/${res.data.student.id}`);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                toast.error('Add error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
 
     return (

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::apiResource('user', 'App\Http\Controllers\UserController');
 
+Route::get('/log', [LogController::class, 'index'])->name('log.index');
 Route::group([
 
     'middleware' => ['XSSProtection','api'],
@@ -55,6 +57,7 @@ Route::middleware(['XSSProtection', 'checkRoles'])->group(function () {
     Route::post('user', [UserController::class, 'store'])->name('user.store');
     Route::put('user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::put('user/active/{id}', [UserController::class, 'updateActive'])->name('user.updateActive');
 });
 
 

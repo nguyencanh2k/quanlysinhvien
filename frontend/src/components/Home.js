@@ -9,7 +9,7 @@ function Home() {
         await axios
             .get('http://127.0.0.1:8000/api/student')
             .then((res) => {
-                setStudents(res.data);
+                setStudents(res.data.students);
             })
             .catch((error) => console.log(error));
     };
@@ -17,7 +17,7 @@ function Home() {
         await axios
             .get('http://127.0.0.1:8000/api/user')
             .then((res) => {
-                setUsers(res.data);
+                setUsers(res.data.users);
             })
             .catch((error) => console.log(error));
     };

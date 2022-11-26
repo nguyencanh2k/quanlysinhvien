@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditUser() {
     const [username, setUsername] = useState('');
@@ -20,14 +22,14 @@ function EditUser() {
         axios
             .get(`http://127.0.0.1:8000/api/user/${id}`)
             .then((res) => {
-                setUsername(res.data.username);
-                setFirstname(res.data.firstname);
-                setLastname(res.data.lastname);
-                setGender(res.data.gender);
-                setActive(res.data.active);
-                setRole(res.data.roles[0].name);
-                setPhone(res.data.phone);
-                setEmail(res.data.email);
+                setUsername(res.data.user.username);
+                setFirstname(res.data.user.firstname);
+                setLastname(res.data.user.lastname);
+                setGender(res.data.user.gender);
+                setActive(res.data.user.active);
+                setRole(res.data.user.roles[0]?.name);
+                setPhone(res.data.user.phone);
+                setEmail(res.data.user.email);
                 // setPassword(res.data.password);
             })
             .catch((error) => console.log(error));
@@ -49,9 +51,17 @@ function EditUser() {
         axios
             .put(`http://127.0.0.1:8000/api/user/${id}`, data)
             .then((res) => {
-                navigate(`/view-user/${res.data.id}`);
+                toast.success('Edit success!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                navigate(`/view-user/${res.data.user.id}`);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                toast.error('Edit error!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                console.log(error);
+            });
     }
 
     return (

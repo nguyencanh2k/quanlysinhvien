@@ -42,6 +42,8 @@ const Login = () => {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 401) {
                 setErrMsg('Unauthorized');
+            } else if (err.response?.status === 402) {
+                setErrMsg('User not active');
             } else {
                 setErrMsg('Login Failed');
             }

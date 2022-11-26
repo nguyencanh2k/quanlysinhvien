@@ -37,7 +37,10 @@ class UserController extends Controller
         }else{
             $users = $query->paginate(10);
         }
-        return $users;
+        return response()->json([
+            'message' => 'successfully',
+            'users' => $users
+        ], 201);
     }
 
     /**
@@ -86,7 +89,10 @@ class UserController extends Controller
         }catch(ModelNotFoundException $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        return $user;
+        return response()->json([
+            'message' => 'successfully',
+            'user' => $user
+        ], 201);
     }
 
     /**
@@ -110,12 +116,29 @@ class UserController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         $user = User::findOrFail($id);
-        $user_by = Auth::user()->username;
         $user->update($validator->validated());
         $user->syncRoles($request->role);
-        return $user;
+        return response()->json([
+            'message' => 'successfully',
+            'user' => $user
+        ], 201);
     }
 
+    public function updateActive(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'active' => 'string|max:255',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $user = User::findOrFail($id);
+        $user->update($validator->validated());
+        return response()->json([
+            'message' => 'successfully',
+            'user' => $user
+        ], 201);
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -126,6 +149,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return $user;
+        return response()->json([
+            'message' => 'successfully',
+            'user' => $user
+        ], 201);
     }
 }

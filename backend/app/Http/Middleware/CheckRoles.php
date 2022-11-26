@@ -18,22 +18,28 @@ class CheckRoles
      */
     public function handle(Request $request, Closure $next)
     {
-        // if(Auth::user()->active == '1'){
-        //     return response()->json(['error' => 'You have not Admin access'], 401);
-        // }
+        if(Auth::user()->active == '0'){
+            return response()->json(['error' => 'You have not Admin access'], 401);
+        }
 
         $route = Route::getRoutes()->match($request);
         $currentroute = $route->getName();
         $id = $request->route('id');
 
+        if(Auth::user()->id == $id){
+            if($currentroute == 'user.destroy' || $currentroute == 'user.update' || $currentroute == 'user.updateActive'){
+                return response()->json(['error' => 'Error.'], 401);
+            }
+        }
+
         if(Auth::user()->hasRole('QLHT')){
-            if($currentroute == 'student.destroy' || $currentroute == 'user.destroy'){
-                return response()->json(['error' => 'You have not Admin access. Not delete'], 401);
+            if($currentroute == 'student.destroy' || $currentroute == 'user.destroy' || $currentroute == 'user.updateActive'){
+                return response()->json(['error' => 'You have not Admin access.'], 401);
             }
 
             if($currentroute == 'user.update'){
                 $user = User::find($id);
-                if($user->hasRole('Admin') || $request->role == 'Admin'){
+                if($user->hasRole('Admin') || $request->role == 'Admin' || $user->active != $request->active){
                     return response()->json(['error' => 'You have not Admin access. Not update'], 401);
                 }
             }
@@ -41,6 +47,7 @@ class CheckRoles
                 return response()->json(['error' => 'You have not Admin access. Not create'], 401);   
             }
         }
+        
         return $next($request);
 
 
