@@ -183,8 +183,7 @@ function User({ userRole }) {
                                             <Link
                                                 to={`/edit-user/${user.id}`}
                                                 className={
-                                                    (userRole.role[0] == 'QLHT' && user.roles[0]?.name == 'Admin') ||
-                                                    userRole.id == user.id
+                                                    userRole.role[0] == 'QLHT' && user.roles[0]?.name == 'Admin'
                                                         ? 'btn btn-success btn-sm disabled'
                                                         : 'btn btn-success btn-sm'
                                                 }

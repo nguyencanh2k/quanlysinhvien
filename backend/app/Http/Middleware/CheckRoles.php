@@ -27,7 +27,7 @@ class CheckRoles
         $id = $request->route('id');
 
         if(Auth::user()->id == $id){
-            if($currentroute == 'user.destroy' || $currentroute == 'user.update' || $currentroute == 'user.updateActive'){
+            if($currentroute == 'user.destroy' || $currentroute == 'user.updateActive'){
                 return response()->json(['error' => 'Error.'], 401);
             }
         }
