@@ -7,7 +7,7 @@ use Spatie\Activitylog\Models\Activity;
 class LogController extends Controller
 {
     public function index(){
-        $log = Activity::all();
+        $log = Activity::all()->last();
         return response()->json($log);
     }
 }

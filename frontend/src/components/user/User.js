@@ -16,7 +16,7 @@ function User({ userRole }) {
         searchType: searchType,
         record: record,
     };
-    const loadUsers = (pageNumber) => {
+    const loadUsers = (pageNumber = 1) => {
         axios
             .get(`http://127.0.0.1:8000/api/user?page=${pageNumber}`, {
                 params: data,
@@ -167,11 +167,7 @@ function User({ userRole }) {
                                                     onClick={(e) =>
                                                         ActiveSubmit(user.id, e.target.value, pages.current_page)
                                                     }
-                                                    disabled={
-                                                        userRole.role[0] == 'QLHT' || userRole.id == user.id
-                                                            ? true
-                                                            : false
-                                                    }
+                                                    disabled={userRole.role[0] == 'QLHT' ? true : false}
                                                 />
                                             </div>
                                         </td>

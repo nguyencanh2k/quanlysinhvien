@@ -54,10 +54,10 @@ function Home() {
                                                 <i className="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                <a className="dropdown-item" href="javascript:void(0);">
+                                                <a className="dropdown-item" href="#">
                                                     View More
                                                 </a>
-                                                <a className="dropdown-item" href="javascript:void(0);">
+                                                <a className="dropdown-item" href="#">
                                                     Delete
                                                 </a>
                                             </div>
@@ -91,10 +91,10 @@ function Home() {
                                                 <i className="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                <a className="dropdown-item" href="javascript:void(0);">
+                                                <a className="dropdown-item" href="#">
                                                     View More
                                                 </a>
-                                                <a className="dropdown-item" href="javascript:void(0);">
+                                                <a className="dropdown-item" href="#">
                                                     Delete
                                                 </a>
                                             </div>

@@ -15,7 +15,7 @@ function Student({ userRole }) {
         searchType: searchType,
         record: record,
     };
-    const loadStudents = async (pageNumber) => {
+    const loadStudents = async (pageNumber = 1) => {
         await axios
             .get(`http://127.0.0.1:8000/api/student?page=${pageNumber}`, {
                 params: data,

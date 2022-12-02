@@ -179,7 +179,7 @@ function Register() {
                                         />
                                         <label className="form-check-label" htmlFor="terms-conditions">
                                             I agree to
-                                            <a href="javascript:void(0);">privacy policy & terms</a>
+                                            <a href="#">privacy policy & terms</a>
                                         </label>
                                     </div>
                                 </div>

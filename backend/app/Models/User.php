@@ -29,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
         'phone', 'email', 'password', 'role',
         'deleted_at', 'deleted_by', 'created_at', 'created_by', 'updated_at', 'updated_by'
     ];
+    protected $primaryKey = 'id';
     protected static $logAttributes = [
         'username', 'firstname', 'lastname', 'gender', 'active', 
         'phone', 'email', 'password', 'role',
@@ -105,7 +106,11 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
 
         static::creating(function ($model) {
-            $model->created_by = Auth()->user()->id;
+            if(isset(Auth()->user()->id)){
+                $model->created_by = Auth()->user()->id;
+            }else{
+                $model->created_by = NULL;
+            }
             $model->updated_by = NULL;
             $model->deleted_by = NULL;
         });
